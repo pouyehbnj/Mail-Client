@@ -1,12 +1,19 @@
 var path = require('path');
 
-module.exports = {
+module.exports ={
 
     ip: '0.0.0.0',
     port: '3000',
 
     path: {
         controllers: path.resolve('./controllers'),
-        model: path.resolve('./models')
+        model: path.resolve('./models'),
+        database: path.resolve('./database')
     },
-};
+
+    redis:{
+       // database: 'CacheDB',
+        host: '192.168.97.194',
+        port: '6379'
+    }
+}

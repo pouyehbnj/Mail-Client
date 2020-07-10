@@ -1,11 +1,13 @@
+
+global.config = require("./config");
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-global.config = require("./config");
-
 const routeHandler = require('./routes/index');
-
+const redisDatabase = require(`${config.path.database}/redis`);
+const redisDatabaseObj = new redisDatabase();
+redisDatabaseObj.connectToDatabase()
 
 app.use(cors());
 
