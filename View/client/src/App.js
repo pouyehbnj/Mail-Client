@@ -5,15 +5,100 @@ import {BootstrapTable, TableHeaderColumn}
         from 'react-bootstrap-table'
 import {useTable} from 'react-table';
 
+import axios from 'axios';
+
+
+
+var loginInfo = {
+  email: "",
+  password: "",
+  token: "",
+}
 class App extends React.Component {
-  render(){
-    return (
-      <div>
-        <NavBar title="Our Awesome Project" user="test.dehganpour@gmail.com" />
-        <MainContainer />
-      </div>
-    )
+  constructor(props) {
+    super(props);
   }
+  login(){
+    var api = "http://192.168.112.209:5000/api/login";
+    var request = {
+      method: 'post',
+      url: api,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // data: { "email": loginInfo.email, "password": loginInfo.password }
+      data: { "username": loginInfo.email, "password": loginInfo.password }
+    }
+    axios(request)
+      .then(response => {
+        console.log(response)
+        loginInfo.token = response.data.token;
+        console.log('loginIngo', JSON.stringify(loginInfo))
+        this.forceUpdate();
+      }).catch(error => {
+        alert("Wrong password")
+        window.location.reload(false);
+      })
+  }
+  render(){
+    if (loginInfo.token != "") {
+      return (
+        <div>
+          <NavBar title="Étoile Email Manager" user={loginInfo.email} />
+          <MainContainer />
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <NavBar title="Étoile Email Manager" user={loginInfo.email} />
+          <div className="auth-wrapper">
+            <div className="auth-inner">
+              <Login onClick={this.login.bind(this)} />
+            </div>
+          </div>
+        </div>
+      )
+    }
+  }
+}
+class Login extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      password: ""
+    }
+  }
+  handleSubmitClick() {
+    console.log("Handling Submit...")
+    this.props.onClick();
+  }
+  render() {
+    return (
+
+      <form>
+        <h3>Étoile Email Manager</h3>
+        <div className="form-group">
+          <label>Email address</label>
+          {/* <input type="email" className="form-control col-xs-4" placeholder="Enter email"
+            onChange={e => this.setState({ email: e.target.value })} /> */}
+          <input type="text" className="form-control col-xs-4" placeholder="Enter email"
+            onChange={e => loginInfo.email = e.target.value} />
+        </div>
+        <div className="form-group">
+          <label>Password</label>
+          {/* <input type="password" className="form-control" placeholder="Enter password"
+            onChange={e => this.setState({ password: e.target.value })} /> */}
+
+          <input type="text" className="form-control" placeholder="Enter password"
+            onChange={e => loginInfo.password = e.target.value} />
+        </div>
+        <button type="button" className="btn btn-info btn-block more" onClick={this.handleSubmitClick.bind(this)}>Submit</button>
+      </form>
+
+    );
+}
 }
   /*state = {
     response: '',
@@ -120,38 +205,63 @@ class App extends React.Component {
   
   class EmailLabels extends React.Component {
     
-    static defaultProps = {
+   
+  
+    componentDidMount() {
+    
+      this.callApi()
+    // 
+        .then(res => this.setState({  numberOfUnSeen: res.inbox}))
+        .catch(err => console.log(err));
+     //   console.log('hereeeee'+this.state.numberOfUnSeen)
+
+    }
+    callApi = async () => {
+      console.log("injaaaaaaa :")
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDU4MTk2MH0.kX_ehCHmVVCEsOWEyCJuanwbJEh6WWIbZGC2ChE8ExU' },
+       // body: JSON.stringify({ title: 'React POST Request Example' })
+    };
+      console.log('hiii-zahra')
+      const response = await fetch('http://192.168.112.241:5000/api/receive/numberOf/emails' , requestOptions)
+    //  .then(response => response.json())
+       const body = await response.json();
+       
+    console.log(body)
+    this.state.myBoolean=false;
+      if (response.status !== 200) throw Error(body.message);
+  
+      return body;
+    };
+    
+   static  defaultProps = {
       //Labels will be static for this example.
       labels: [{
         id : 1,
-        name: 'Inbox-zahra',
-        emailNumber : 90
+        name: 'Inbox',
+        emailNumber : 0
       },{
         id : 2,
-        name: 'Important',
-        emailNumber : 2
-      },{
-        id : 3,
         name: 'Sent',
         emailNumber : 9
-      },{
-        id : 4,
-        name: 'Trash',
-        emailNumber : 12
-      }]
-    }; //Babel v6.4 Requires semicolons after class properties
+      }] ,
+    } //Babel v6.4 Requires semicolons after class properties
     
     render() {
+      console.log('hereeeee   2 '+this.props.labels.name)
       return (
         <ul className="list-group">
-          {/* Iterate to create labels from the props */}
+          {/* Iterate to create labels from the props 
           {this.props.labels.map((label) => (
               <LabelItem
                 key={label.id}
                 id={label.id}
                 label={label}
                 onClick={this.props.onLabelClick}/>
-          ))}
+          ))} */}
+          <LabelItem />
         </ul>
       )
     }
@@ -159,18 +269,68 @@ class App extends React.Component {
   
   class LabelItem extends React.Component {
     
+    state ={
+
+      numberOfUnAll : '' ,
+      numberOfSent: ''
+     }
+      labels = {
+      //Labels will be static for this example.
+      labels: [{
+        id : 1,
+        name: 'Inbox',
+        emailNumber : 0
+      },{
+        id : 2,
+        name: 'Sent',
+        emailNumber : 9
+      }] ,
+    } //Babel v6.4 Requires semicolons after class properties
+    
+    componentDidMount() {
+    
+      this.callApi()
+    // 
+        .then(res => this.setState({  numberOfUnAll: res.inbox , numberOfSent: res.sent}))
+        .catch(err => console.log(err));
+     //   console.log('hereeeee'+this.state.numberOfUnSeen)
+
+    }
+    callApi = async () => {
+      console.log("injaaaaaaa :")
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDU4MTk2MH0.kX_ehCHmVVCEsOWEyCJuanwbJEh6WWIbZGC2ChE8ExU' },
+       // body: JSON.stringify({ title: 'React POST Request Example' })
+    };
+      console.log('hiii-zahra')
+      const response = await fetch('http://192.168.112.241:5000/api/receive/numberOf/emails' , requestOptions)
+    //  .then(response => response.json())
+       const body = await response.json();
+       
+    console.log(body)
+    this.state.myBoolean=false;
+      if (response.status !== 200) throw Error(body.message);
+  
+      return body;
+    };
     handleClick(){
       console.log('handleClick '+this.props.id);
       this.props.onClick(this.props.id);
     }
-    
+    hi(e){
+      e.preventDefault()
+      alert('hi')
+    }
     render(){ 
+    //  console.log(this.props.state.numberOfUnSeen)
       return (
-          <li className="list-group-item justify-content-between" onClick={this.handleClick.bind(this)}>
-            {this.props.label.name}
-            <span className="badge badge-default badge-pill">{this.props.label.emailNumber}</span>
-          </li>
-      )
+        <div>
+      <h6> Inbox   <span class="badge badge-secondary" onClick={e=>this.hi(e)}>{this.state.numberOfUnAll}</span></h6>
+      <h6>Sent  <span class="badge badge-secondary">{this.state.numberOfSent}</span></h6>
+      </div>
+      );
     }
   }
   
@@ -210,19 +370,17 @@ class App extends React.Component {
         <div>
           {/* Tabs created only as an example, they don't interact with the rest of the app. */}
           <ul className="nav nav-tabs">
-            <Tab name="Inbox-zahra" activeTab={true} icon="fa-inbox" />
-            <Tab name="Social" activeTab={false} icon="fa-users" />
-            <Tab name="Notifications" activeTab={false} icon="fa-tags" />
-            <Tab name="Updates" activeTab={false} icon="fa-info-circle" />
+            <Tab name="Inbox" activeTab={true} icon="fa-inbox" />
           </ul>
-          <div className="list-group">
-            {/* EmailItem creation: */}
-            {this.props.emails.map((email) => (
+          <div >
+            {/* EmailItem creation:
+      {this.props.emails.map((email) => ( 
                 <EmailItem
                   key={email.id}
                   email={email}
                   handleEmailClick={this.handleEmailClick}/>
-            ))}
+            ))}  */}
+            <EmailItem />
           </div>
         </div>
       )
@@ -231,6 +389,88 @@ class App extends React.Component {
   
   class EmailItem extends React.Component {
     
+
+
+    myBoolean = false ;
+    state = {
+      response: '',
+      response2: '' ,
+      state: '',
+      date1: '' ,
+      date2: '' ,
+      text1: '' ,
+      text2: '' ,
+      responseToPost: '',
+      myBoolean : false 
+    };
+    state2 = {
+      text: '',
+      date: '' ,
+    }
+    
+    componentDidMount() {
+    
+      this.callApi()
+    // 
+        .then(res => this.setState({ response: res.emails[2].subject , response2: res.emails[3].subject 
+        ,date1: res.emails[2].date , date2: res.emails[3].date ,text1: res.emails[2].text , text2: res.emails[3].text}))
+        .catch(err => console.log(err));
+        console.log(this.state.response)
+
+    }
+    callApi = async () => {
+      console.log("inja :"+this.myBoolean)
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDM4MzcxMH0.QF9MRwzU5VZsmP3RanKpKruRf83kQ2b2-qEMcuTBXuc' },
+       // body: JSON.stringify({ title: 'React POST Request Example' })
+    };
+      console.log('hiii-zahra')
+      const response = await fetch('http://192.168.112.241:5000/api/receive/emails' , requestOptions)
+    //  .then(response => response.json())
+       const body = await response.json();
+       
+    console.log(body)
+    this.state.myBoolean=false;
+      if (response.status !== 200) throw Error(body.message);
+  
+      return body;
+    };
+    handleLabelClick(labelId){
+      console.log(this.state.myBoolean);
+      console.log('Label clicked: '+labelId);
+      console.log('pydat krdm')
+     // this.myBoolean=true ;
+    //  this.forceUpdate();
+     // this.setState({
+     //   selectedLabel: labelId
+    //  });
+    }
+ /*   render(){
+      return (
+        <p className="center">The email box is empty ....fuck you.</p>
+      )
+    }*/
+    alertClicked(text,date,e) {
+      e.preventDefault();
+      this.state2.text=text ;
+      this.state2.date=date ;
+      //alert('You clicked the third ListGroupItem');
+     this.myBoolean=true ;
+     this.forceUpdate();
+    this.state.myBoolean=false ;
+   //  let content = <showText />;
+    // var obj = new showText ;
+  // obj.hi(text)
+   //obj.render();
+    }
+   backClicked(e){
+    e.preventDefault();
+
+     this.myBoolean=false ;
+     this.forceUpdate();
+   }
     handleEmailClick() {
       //Call to the parent's method passed through properties.
       
@@ -239,7 +479,55 @@ class App extends React.Component {
     }
     
     render(){
-      return (
+      console.log('hii'+this.myBoolean)
+      if(!this.myBoolean){
+          return (
+            <div class="list-group" > 
+         
+            <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(this.state.text1,this.state.date1,e)} >
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{this.state.response}</h5>
+                <small class="text-muted">{this.state.date1}</small>
+              </div>
+              <p class="mb-1">{this.state.text} </p>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(this.state.text2,this.state.date2,e)}>
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{this.state.response2}</h5>
+                <small class="text-muted">{this.state.date2}</small>
+              </div>
+              <p class="mb-1">{this.state.text2}</p>
+           
+            </a>
+          </div>
+  
+          );
+      }
+      else{
+        return(
+        <div class="list-group" > 
+         
+        <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start"  >
+          <div class="d-flex w-100 justify-content-between">
+          {/*  <h5 class="mb-1">{this.state.response}</h5> */}
+            <small class="text-muted">{this.state2.date}</small>
+          </div>
+          <p class="mb-1">{this.state2.text} </p>
+        </a>
+  
+        <button onClick={e=>this.backClicked(e)}>
+           Back
+      </button>
+        </div>
+      
+        );
+      }
+
+
+
+
+     /* return (
+        
         <li className="list-group-item d-flex justify-content-start" onClick={this.handleEmailClick.bind(this)}>
             <div className="checkbox">
               <input type="checkbox" />
@@ -255,7 +543,7 @@ class App extends React.Component {
             </span>
           </li>
           
-      )
+      )*/
     }
   }
   
@@ -462,7 +750,7 @@ class showText extends React.Component {
       });
     }
     
-    static defaultProps = {
+  /*  static defaultProps = {
       //Emails to be displayed on the Email List
       emails : [
         {
@@ -508,18 +796,18 @@ class showText extends React.Component {
           time: "14:05"
         }
       ]
-    };
+    };*/
   
     render() {
-      console.log(this.props.emails[0].labelId);
-      const filteredEmails = this.props.emails.filter(e => e.labelId & e.labelId == this.state.selectedLabel);
+     // console.log(this.props.emails[0].labelId);
+     // const filteredEmails = this.props.emails.filter(e => e.labelId & e.labelId == this.state.selectedLabel);
       
-      let content = null;
-      if(filteredEmails.length > 0){
-         content = <EmailList emails={filteredEmails} />;
-      } else {
-         content = <EmptyBox />;
-      }
+     let content = null;
+    //  if(filteredEmails.length > 0){
+         content = <EmailList />;
+  //    } else {
+   //      content = <EmptyBox />;
+  //    }
       
       return (
         <div className="container">
