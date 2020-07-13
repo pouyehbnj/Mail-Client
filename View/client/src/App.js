@@ -641,12 +641,11 @@ this.forceUpdate()
          Back
     </button> */}
     <p></p>  <p></p> 
-    <div class="btn-group">
-    <button  type="submit" className="btn btn-primary btn-block" style={{ height: 40, width: 70 }}
-          onClick={e=>this.backClicked(e)}>Back</button
-          ><button type="submit" className="btn btn-primary btn-block"
-      style={{ backgroundColor:"#b80000", height: 40, width: 70 }} >Delete</button>
-     </div>
+    {/* <div class="btn-group"> */}
+    <h><button  type="submit" className="btn-primary btn-block"  onClick={e=>this.backClicked(e)}>
+      Back</button></h>
+         <h> <button type="submit" className="btn btn-danger more">Delete</button></h>
+     {/* style={{ backgroundColor:"#b80000", height: 40, width: 70 }}</div> */}
       </div>
       );
     }
@@ -659,6 +658,7 @@ this.forceUpdate()
   }
   class SentItem extends React.Component{
     myBoolean = false ;
+    deleted = false;
     state = {
     emails :[]
     }
@@ -668,6 +668,7 @@ this.forceUpdate()
       date: '' ,
       from: ''
     }
+    
     componentDidMount() {
     
       this.callApi()
@@ -710,6 +711,27 @@ this.forceUpdate()
      this.forceUpdate();
   
     }
+    delete(e,id){
+      e.preventDefault();
+      fetch('http://localhost:5000/api/delete/emails', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
+        },
+        body: JSON.stringify({uid:id})
+      }).then(response => {
+        if (response.ok) {
+          response.json().then(json => {
+            
+            console.log('now:')
+            console.log(json);
+            this.deleted=true
+            this.forceUpdate()
+          });
+        }
+      })
+    }
    backClicked(e){
     e.preventDefault();
 
@@ -717,6 +739,7 @@ this.forceUpdate()
      this.forceUpdate();
    }
     render(){
+      if(this.deleted){
       if(!this.myBoolean){
         return (
           <div>
@@ -755,15 +778,40 @@ this.forceUpdate()
       </a>
          
         <p></p>  <p></p> 
-        <div class="btn-group">
-      <button  type="submit" className="btn btn-primary btn-block" style={{ height: 40, width: 70 }}
-          onClick={e=>this.backClicked(e)}>Back</button
-          ><button type="submit" className="btn btn-primary btn-block"
-          style={{ backgroundColor:"#b80000" , height: 40, width: 70}} underlayColor="#b80000">Delete</button>
-            </div>
+      
+      <h><button  type="submit" className="btn-primary btn-block" style = {{ height: 40, width: 70}}
+          onClick={e=>this.backClicked(e)}>Back</button></h>
+          <h><button type="submit" className="btn btn-danger more"
+          onClick={e=>this.delete(e,this.selectedEmail.uid)}>Delete</button></h>
+          {/* style={{ backgroundColor:"#b80000" , height: 40, width: 70}} underlayColor="#b80000" */}
+            
       </div>
       );
     }
+  }else{
+    return(
+       
+      <div class="list-group" > 
+       
+      <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start"  >
+        <div class="d-flex w-100 justify-content-between">
+        {/*  <h5 class="mb-1">{this.state.response}</h5> */}
+          <small class="text-muted">{this.selectedEmail.date}</small>
+        </div>
+        <p class="mb-1">{this.selectedEmail.text} </p>
+      </a>
+         
+        <p></p>  <p></p> 
+      
+      <h><button  type="submit" className="btn-primary btn-block" style = {{ height: 40, width: 70}}
+          onClick={e=>this.backClicked(e)}>Back</button></h>
+          <h><button type="submit" className="btn btn-danger more"
+          onClick={e=>this.delete(e,this.selectedEmail.uid)}>Delete</button></h>
+          {/* style={{ backgroundColor:"#b80000" , height: 40, width: 70}} underlayColor="#b80000" */}
+            
+      </div>
+      );
+  }
 
 
     }
@@ -964,17 +1012,17 @@ class showText extends React.Component {
       return (
         <div>
         <p>
-          <h>To </h>
+          <h>To <span className="second-word-formatting"/></h>
           <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setTos(this.state, e)} />
         </p>
 
         <p>
           <h>Subject </h>
-          <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setState({ subject: e.target.value })} />
+          <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.state.email.subject = e.target.value } />
         </p>
         <p>       
           <h> Email </h>
-          <SunEditor width="70%" height="100%" onChange={e => this.setState({ text: e })} />
+          <SunEditor width="70%" height="100%" onChange={e => this.state.email.text =  e} />
         </p>
         <button type="submit" className="btn btn-primary btn-block" style={{ height: 50, width: 70 }}
           onClick={e => this.sendEmail(this.state, e)}>Send</button>
@@ -983,7 +1031,7 @@ class showText extends React.Component {
       )
     }else{
       return(
-        <MainContainer/>
+        <EmailLabels/>
       )
     }
     }

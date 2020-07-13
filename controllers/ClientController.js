@@ -343,13 +343,13 @@ module.exports = new class ClientController {
                 else hostMail = 'Yahoo'
                 await that.fetchMails('[' + hostMail + ']/Sent Mail', connection, 'ALL', []).then(sentResult => {
                     console.log("unseen:"+sentResult.length)
-                    connection.end()
+                     connection.end()
                     return res.status(200).json({
                         success: true,
                         inbox: UnseenResult.length,
                         sent:sentResult.length
                     })
-
+                  
                 })
                 
             })
