@@ -43,7 +43,7 @@ class App extends React.Component {
         body: JSON.stringify({ "email": loginInfo.email, "password": loginInfo.password })
     };
        console.log('hiii-zahraaaaaaaaaaaaaaa')
-       const response = await fetch('http://localhost:5001/api/login' , { method: 'POST',
+       const response = await fetch('http://localhost:5000/api/login' , { method: 'POST',
        headers: {
          'Content-Type': 'application/json',
        },
@@ -246,7 +246,7 @@ class Login extends React.Component{
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5001/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://localhost:5000/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -328,7 +328,7 @@ class Login extends React.Component{
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5001/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://localhost:5000/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -570,7 +570,7 @@ this.forceUpdate()
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5001/api/receive/emails' , requestOptions)
+      const response = await fetch('http://localhost:5000/api/receive/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -652,6 +652,8 @@ this.forceUpdate()
         return (
           <div>
       {this.state.emails.map(email => (
+
+        
           <div class="list-group" > 
           <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email,e)} >
             <div class="d-flex w-100 justify-content-between">
@@ -666,10 +668,12 @@ this.forceUpdate()
               <small class="text-muted">{email.date}</small>
             </div>
             <p class="mb-1">{email.text} </p>
+            
           </a>
           
           
         </div>
+      
   ))}
   </div>
         );
@@ -687,9 +691,16 @@ this.forceUpdate()
         <p class="mb-1">{this.selectedEmail.text} </p>
       </a>
 
-      <button onClick={e=>this.backClicked(e , this.selectedEmail.id)}>
+      {/* <button onClick={e=>this.backClicked(e)}>
          Back
-    </button>
+    </button> */}
+    <p></p>  <p></p> 
+    <div class="btn-group">
+    <button  type="submit" className="btn btn-primary btn-block" style={{ height: 40, width: 70 }}
+          onClick={e=>this.backClicked(e)}>Back</button
+          ><button type="submit" className="btn btn-primary btn-block"
+      style={{ backgroundColor:"#b80000", height: 40, width: 70 }} >Delete</button>
+     </div>
       </div>
       );
     }
@@ -734,7 +745,7 @@ this.forceUpdate()
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5001/api/receive/sent/emails' , requestOptions)
+      const response = await fetch('http://localhost:5000/api/receive/sent/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -796,10 +807,14 @@ this.forceUpdate()
         </div>
         <p class="mb-1">{this.selectedEmail.text} </p>
       </a>
-
-      <button onClick={e=>this.backClicked(e)}>
-         Back
-    </button>
+         
+        <p></p>  <p></p> 
+        <div class="btn-group">
+      <button  type="submit" className="btn btn-primary btn-block" style={{ height: 40, width: 70 }}
+          onClick={e=>this.backClicked(e)}>Back</button
+          ><button type="submit" className="btn btn-primary btn-block"
+          style={{ backgroundColor:"#b80000" , height: 40, width: 70}} underlayColor="#b80000">Delete</button>
+            </div>
       </div>
       );
     }
@@ -959,34 +974,39 @@ class showText extends React.Component {
   class ComposeMail extends React.Component {
 
     state = {
+      email:{
       to: [],
       subject: '',
       text: ''
+    },
+    success:false
     }
   
     setTos(state, e) {
-      state.to = []
-      state.to = e.target.value.split(",")
+      state.email.to = []
+      state.email.to = e.target.value.split(",")
   
     }
    sendEmail(state, e) {
       e.preventDefault();
       console.log("okkkkk")
       console.log(state);
-      fetch('http://localhost:5001/api/send/email', {
+      fetch('http://localhost:5000/api/send/email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
         },
-        body: JSON.stringify(state)
+        body: JSON.stringify(state.email)
       }).then(response => {
         if (response.ok) {
           response.json().then(json => {
             console.log(json);
-            state.token = json.token
+            
             console.log('now:')
             console.log(state)
+            this.state.success=true
+            this.forceUpdate()
           });
         }
       })
@@ -994,17 +1014,19 @@ class showText extends React.Component {
     
     }    
     render(){
+      if(!this.state.success){
       return (
         <div>
         <p>
           <h>To </h>
           <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setTos(this.state, e)} />
         </p>
-       
+
+        <p>
           <h>Subject </h>
           <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setState({ subject: e.target.value })} />
-        
-        <p>
+        </p>
+        <p>       
           <h> Email </h>
           <SunEditor width="70%" height="100%" onChange={e => this.setState({ text: e })} />
         </p>
@@ -1013,6 +1035,11 @@ class showText extends React.Component {
 
       </div>
       )
+    }else{
+      return(
+        <MainContainer/>
+      )
+    }
     }
   }
   
