@@ -43,7 +43,7 @@ class App extends React.Component {
         body: JSON.stringify({ "email": loginInfo.email, "password": loginInfo.password })
     };
        console.log('hiii-zahraaaaaaaaaaaaaaa')
-       const response = await fetch('http://localhost:5000/api/login' , { method: 'POST',
+       const response = await fetch('http://localhost:5001/api/login' , { method: 'POST',
        headers: {
          'Content-Type': 'application/json',
        },
@@ -121,76 +121,7 @@ class Login extends React.Component{
     );
 }
 }
-  /*state = {
-    response: '',
-    post: '',
-    responseToPost: '',
-  };*/
-
-/* 
-
-
-
-
-  callApi = async () => {
-    console.log('hiii')
-    const response = await fetch('/api/hello');
-    const body = await response.json();
-    
-    if (response.status !== 200) throw Error(body.message);
-
-    return body;
-  };
-
-  handleSubmit = async e => {
-    e.preventDefault();
-    const response = await fetch('/api/world', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ post: this.state.post }),
-      
-    });
-    const body = await response.text();
-    console.log(body)
-    this.setState({ responseToPost: body });
-  }; */
-
- // render() {
-   // console.log('In Render');
-   // return (
-     // <div className="App">
-       // <header className="App-header">
-         // <img src={logo} className="App-logo" alt="logo" />
-          //<p>
-            //Edit <code>src/App.js</code> and save to reload.
-          //</p>
-          //<a
-            //className="App-link"
-            //href="https://reactjs.org"
-            //target="_blank"
-            //rel="noopener noreferrer"
-          //>
-            //Learn React
-          //</a>
-        //</header>
-        //<p>{this.state.response}</p>
-        //<form onSubmit={this.handleSubmit}>
-         // <p>
-          //  <strong>Post to Server:</strong>
-          //</p>
-          //<input
-            //type="text"
-            //value={this.state.post}
-           // onChange={e => this.setState({ post: e.target.value })}
-          ///>
-          //<button type="submit">Submit</button>
-        //</form>
-        //<p>{this.state.responseToPost}</p>
-      //</div>
-   // );
-  //}
+ 
 
   class NavBar extends React.Component {
     
@@ -242,11 +173,11 @@ class Login extends React.Component{
       const requestOptions = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' ,
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDU4MTk2MH0.kX_ehCHmVVCEsOWEyCJuanwbJEh6WWIbZGC2ChE8ExU' },
+          'Authorization': 'Bearer ${loginInfo.token}' },
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5000/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://localhost:5001/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -324,11 +255,11 @@ class Login extends React.Component{
       const requestOptions = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' ,
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDU4MTk2MH0.kX_ehCHmVVCEsOWEyCJuanwbJEh6WWIbZGC2ChE8ExU' },
+          'Authorization': 'Bearer ${loginInfo.token}' },
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5000/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://localhost:5001/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -566,11 +497,11 @@ this.forceUpdate()
       const requestOptions = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' ,
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDM4MzcxMH0.QF9MRwzU5VZsmP3RanKpKruRf83kQ2b2-qEMcuTBXuc' },
+          'Authorization': 'Bearer ${loginInfo.token}' },
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5000/api/receive/emails' , requestOptions)
+      const response = await fetch('http://localhost:5001/api/receive/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -615,14 +546,14 @@ this.forceUpdate()
         const requestOptions = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' ,
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDM4MzcxMH0.QF9MRwzU5VZsmP3RanKpKruRf83kQ2b2-qEMcuTBXuc' },
+            'Authorization': 'Bearer ${loginInfo.token}' },
           body: JSON.stringify({ title: 'React POST Request Example' })
       };
         console.log('hiii-zahra')
         const response = await fetch('http://localhost:5001/api/mark/seen' , {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' ,
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDM4MzcxMH0.QF9MRwzU5VZsmP3RanKpKruRf83kQ2b2-qEMcuTBXuc' },
+            'Authorization': 'Bearer ${loginInfo.token}' },
           body: JSON.stringify({ "uid": this.selectedEmail.id })
       })
       //  .then(response => response.json())
@@ -741,11 +672,11 @@ this.forceUpdate()
       const requestOptions = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' ,
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDM4MzcxMH0.QF9MRwzU5VZsmP3RanKpKruRf83kQ2b2-qEMcuTBXuc' },
+          'Authorization': 'Bearer ${loginInfo.token}' },
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5000/api/receive/sent/emails' , requestOptions)
+      const response = await fetch('http://localhost:5001/api/receive/sent/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -868,7 +799,11 @@ class showText extends React.Component {
         selectedLabel : 1
       }
     }
-    
+    update(e){
+      e.preventDefault()
+      alert('successfully send')
+this.forceUpdate()
+}
     handleLabelClick(labelId){
       console.log('Label clicked: '+labelId);
       console.log('pydat krdm')
@@ -894,7 +829,7 @@ class showText extends React.Component {
         <div className="container">
           
            {/* onClick={this.handleUpdateMe.bind(this) }*/}
-          <ActionsRow />
+          <ActionsRow  updateScreen={e=>this.update(e)}/>
           <hr />
           <div className="row">
             <div className="col-12 col-sm-12 col-md-3 col-lg-2">
@@ -965,7 +900,7 @@ class showText extends React.Component {
       )
       }else{
         return(
-        <ComposeMail  />
+        <ComposeMail update={e=>this.props.updateScreen(e)} />
         )
       }
     } 
@@ -991,11 +926,11 @@ class showText extends React.Component {
       e.preventDefault();
       console.log("okkkkk")
       console.log(state);
-      fetch('http://localhost:5000/api/send/email', {
+      fetch('http://localhost:5001/api/send/email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
+          'authorization': 'Bearer ${loginInfo.token}'
         },
         body: JSON.stringify(state.email)
       }).then(response => {
@@ -1008,6 +943,10 @@ class showText extends React.Component {
             this.state.success=true
             this.forceUpdate()
           });
+          
+          }
+          else{
+            alert('try again')
         }
       })
     
@@ -1018,17 +957,17 @@ class showText extends React.Component {
       return (
         <div>
         <p>
-          <h>To </h>
+          <h>To <span className="second-word-formatting"/></h>
           <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setTos(this.state, e)} />
         </p>
 
         <p>
           <h>Subject </h>
-          <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setState({ subject: e.target.value })} />
+          <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.state.email.subject = e.target.value } />
         </p>
         <p>       
           <h> Email </h>
-          <SunEditor width="70%" height="100%" onChange={e => this.setState({ text: e })} />
+          <SunEditor width="70%" height="100%" onChange={e => this.state.email.text =  e} />
         </p>
         <button type="submit" className="btn btn-primary btn-block" style={{ height: 50, width: 70 }}
           onClick={e => this.sendEmail(this.state, e)}>Send</button>
@@ -1037,11 +976,13 @@ class showText extends React.Component {
       )
     }else{
       return(
-        <MainContainer/>
+        <div>
+   {e=> this.props.update(e)}
+    </div>
       )
     }
-    }
   }
-  
+  }
+    
 
 export default App;
