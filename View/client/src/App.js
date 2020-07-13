@@ -43,7 +43,7 @@ class App extends React.Component {
         body: JSON.stringify({ "email": loginInfo.email, "password": loginInfo.password })
     };
        console.log('hiii-zahraaaaaaaaaaaaaaa')
-       const response = await fetch('http://192.168.112.209:5000/api/login' , { method: 'POST',
+       const response = await fetch('http://localhost:5000/api/login' , { method: 'POST',
        headers: {
          'Content-Type': 'application/json',
        },
@@ -246,7 +246,7 @@ class Login extends React.Component{
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.209:5000/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://localhost:5000/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -328,7 +328,7 @@ class Login extends React.Component{
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.209:5000/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://localhost:5000/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -555,7 +555,7 @@ this.forceUpdate()
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.209:5000/api/receive/emails' , requestOptions)
+      const response = await fetch('http://localhost:5000/api/receive/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -598,6 +598,8 @@ this.forceUpdate()
         return (
           <div>
       {this.state.emails.map(email => (
+
+        
           <div class="list-group" > 
           <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email.text,email.date,e)} >
             <div class="d-flex w-100 justify-content-between">
@@ -606,14 +608,18 @@ this.forceUpdate()
       </div>
 
         &nbsp;&nbsp;<span className="fa fa-star-o"></span>&nbsp;&nbsp;
+       
+       
               <h5 class="mb-1">{email.subject}</h5>
               <small class="text-muted">{email.date}</small>
             </div>
             <p class="mb-1">{email.text} </p>
+            
           </a>
           
           
         </div>
+      
   ))}
   </div>
         );
@@ -631,9 +637,16 @@ this.forceUpdate()
         <p class="mb-1">{this.selectedEmail.text} </p>
       </a>
 
-      <button onClick={e=>this.backClicked(e)}>
+      {/* <button onClick={e=>this.backClicked(e)}>
          Back
-    </button>
+    </button> */}
+    <p></p>  <p></p> 
+    <div class="btn-group">
+    <button  type="submit" className="btn btn-primary btn-block" style={{ height: 40, width: 70 }}
+          onClick={e=>this.backClicked(e)}>Back</button
+          ><button type="submit" className="btn btn-primary btn-block"
+      style={{ backgroundColor:"#b80000", height: 40, width: 70 }} >Delete</button>
+     </div>
       </div>
       );
     }
@@ -678,7 +691,7 @@ this.forceUpdate()
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.209:5000/api/receive/sent/emails' , requestOptions)
+      const response = await fetch('http://localhost:5000/api/receive/sent/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -740,10 +753,14 @@ this.forceUpdate()
         </div>
         <p class="mb-1">{this.selectedEmail.text} </p>
       </a>
-
-      <button onClick={e=>this.backClicked(e)}>
-         Back
-    </button>
+         
+        <p></p>  <p></p> 
+        <div class="btn-group">
+      <button  type="submit" className="btn btn-primary btn-block" style={{ height: 40, width: 70 }}
+          onClick={e=>this.backClicked(e)}>Back</button
+          ><button type="submit" className="btn btn-primary btn-block"
+          style={{ backgroundColor:"#b80000" , height: 40, width: 70}} underlayColor="#b80000">Delete</button>
+            </div>
       </div>
       );
     }
@@ -889,15 +906,10 @@ class showText extends React.Component {
       
         <div className="row"> 
           <div className="col-12 col-sm-12 col-md-3 col-lg-2">
-<<<<<<< HEAD
-            <a href="#" className="btn btn-danger btn-primary btn-block">
-              <i className="fa fa-edit"></i> Compose2
-=======
             <a href="#" className="btn btn-danger btn-primary btn-block"
             onClick={e => this.handleComposeClick(this.state,e)}>
               <i className="fa fa-edit"></i> Compose
               
->>>>>>> ca3ada2985012708c7ea9c2eb00509067c4ba402
             </a>
           </div>
           <div className="col-12 col-sm-12 col-md-9 col-lg-10">
