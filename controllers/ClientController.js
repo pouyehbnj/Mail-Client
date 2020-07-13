@@ -66,6 +66,7 @@ module.exports = new class ClientController {
                 //  })
 
             })
+            
         })
     }
 
@@ -95,6 +96,7 @@ module.exports = new class ClientController {
             console.log("savedddddddd")
             imaps.connect(configConn).then(function (connection) {
                 if (connection) {
+                    connection.end()
                     return res.status(200).json({
                         success: true,
                         token: token
@@ -145,6 +147,7 @@ module.exports = new class ClientController {
                         await emails.sort((a, b) => new Date(b.date) - new Date(a.date));
                     })
                 })
+                connection.end()
                 return res.status(200).json({
                     success: true,
                     emails: emails
@@ -223,6 +226,7 @@ module.exports = new class ClientController {
                 else hostMail = 'Yahoo'
                 await that.fetchMails('[' + hostMail + ']/Sent Mail', connection, 'ALL', []).then(emails => {
                     console.log(emails)
+                    connection.end()
                     return res.status(200).json({
                         success: true,
                         emails: emails
@@ -246,6 +250,7 @@ module.exports = new class ClientController {
                 connection.openBox('INBOX').then(function () {
                 connection.addFlags(req.body.uid, '\\Deleted', function(err) {
                     console.log("Done")
+                    connection.end()
                     return res.status(200).json({
                         success: true,
                         emails: 'Email Successfully Deleted'
@@ -272,6 +277,7 @@ module.exports = new class ClientController {
                 connection.openBox('INBOX').then(function () {
                 connection.addFlags(req.body.uid, '\\Seen', function(err) {
                     console.log("Done")
+                    connection.end()
                     return res.status(200).json({
                         success: true,
                         emails: 'Email Successfully Marked As Seen'
@@ -337,6 +343,7 @@ module.exports = new class ClientController {
                 else hostMail = 'Yahoo'
                 await that.fetchMails('[' + hostMail + ']/Sent Mail', connection, 'ALL', []).then(sentResult => {
                     console.log("unseen:"+sentResult.length)
+                    connection.end()
                     return res.status(200).json({
                         success: true,
                         inbox: UnseenResult.length,
