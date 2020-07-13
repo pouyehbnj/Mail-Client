@@ -20,7 +20,7 @@ module.exports = class redis {
 
     async cacheDataExpire(key, value) {
         return new Promise((res, rej) => {
-            // console.log(JSON.stringify(key)+" "+JSON.stringify(value))
+            console.log(JSON.stringify(key)+" "+JSON.stringify(value))
             client.hmset(key, value, function(err, resolved) { 
                 if(err)
                 rej()

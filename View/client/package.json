@@ -5,13 +5,15 @@
   "dependencies": {
     "bootstrap": "^4.5.0",
     "font-awesome": "^4.7.0",
+    "jquery": "^3.5.1",
     "npm-install-all": "^1.1.21",
     "react": "^16.13.1",
     "react-bootstrap-table": "^4.3.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "react-table": "^7.2.2",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.1",
+    "suneditor-react": "^2.12.5"
   },
   "scripts": {
     "start": "react-scripts start",

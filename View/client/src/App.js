@@ -8,6 +8,8 @@ import {useTable} from 'react-table';
 import axios from 'axios';
 //import { response } from 'express';
 
+import SunEditor, { buttonList } from "suneditor-react";
+import 'suneditor/dist/css/suneditor.min.css';
 
 
 var loginInfo = {
@@ -18,6 +20,10 @@ var loginInfo = {
 class App extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  handleUpdateMe() {
+    this.props.onClick();
   }
   login(){
     this.callApi()
@@ -846,6 +852,8 @@ class showText extends React.Component {
       
       return (
         <div className="container">
+          
+           {/* onClick={this.handleUpdateMe.bind(this) }*/}
           <ActionsRow />
           <hr />
           <div className="row">
@@ -865,25 +873,44 @@ class showText extends React.Component {
    * Come options for showing how to emulate Gmail using Bootsrap 4.
    */
   class ActionsRow extends React.Component {
-    
+    state = {
+      clicked: false
+    }
+     handleComposeClick(state,e){   
+      e.preventDefault()
+      state.clicked=true   
+       this.forceUpdate()
+       console.log("hereeeee pouyeh")
+     }
     render(){
+      if(!this.clicked){
       return (
+        
       
         <div className="row"> 
           <div className="col-12 col-sm-12 col-md-3 col-lg-2">
+<<<<<<< HEAD
             <a href="#" className="btn btn-danger btn-primary btn-block">
               <i className="fa fa-edit"></i> Compose2
+=======
+            <a href="#" className="btn btn-danger btn-primary btn-block"
+            onClick={e => this.handleComposeClick(this.state,e)}>
+              <i className="fa fa-edit"></i> Compose
+              
+>>>>>>> ca3ada2985012708c7ea9c2eb00509067c4ba402
             </a>
           </div>
           <div className="col-12 col-sm-12 col-md-9 col-lg-10">
             <div className="btn-group" role="group" aria-label="Button group with nested dropdown">
-              <button type="button" className="btn btn-secondary">&nbsp;<i className="fa fa-refresh" aria-hidden="true"></i>&nbsp;</button>
+              <button type="button" 
+               className="btn btn-secondary">&nbsp;<i className="fa fa-refresh" aria-hidden="true"></i>&nbsp;</button>
               <button type="button" className="btn btn-secondary">&nbsp;<i className="fa fa-star" aria-hidden="true"></i>&nbsp;</button>
             </div>
             <div className="btn-group" role="group">
               <button id="btnGroupDrop1" type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 More
               </button>
+              
               <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 <a className="dropdown-item" href="#">Action</a>
                 <a className="dropdown-item" href="#">Another action</a>
@@ -900,7 +927,72 @@ class showText extends React.Component {
           </div>
         </div>
       )
+      }else{
+        return(
+        <ComposeMail  />
+        )
+      }
     } 
+  }
+
+  class ComposeMail extends React.Component {
+
+    state = {
+      to: [],
+      subject: '',
+      text: ''
+    }
+  
+    setTos(state, e) {
+      state.to = []
+      state.to = e.target.value.split(",")
+  
+    }
+   sendEmail(state, e) {
+      e.preventDefault();
+      console.log("okkkkk")
+      console.log(state);
+      fetch('http://localhost:5000/api/send/email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
+        },
+        body: JSON.stringify(state)
+      }).then(response => {
+        if (response.ok) {
+          response.json().then(json => {
+            console.log(json);
+            state.token = json.token
+            console.log('now:')
+            console.log(state)
+          });
+        }
+      })
+    
+    
+    }    
+    render(){
+      return (
+        <div>
+        <p>
+          <h>To </h>
+          <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setTos(this.state, e)} />
+        </p>
+        <p>
+          <h>Subject </h>
+          <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setState({ subject: e.target.value })} />
+        </p>
+        <p>
+          <h> Email </h>
+          <SunEditor width="112%" height="100%" onChange={e => this.setState({ text: e })} />
+        </p>
+        <button type="submit" className="btn btn-primary btn-block" style={{ height: 50, width: 70 }}
+          onClick={e => this.sendEmail(this.state, e)}>Send</button>
+
+      </div>
+      )
+    }
   }
   
 
