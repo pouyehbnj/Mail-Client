@@ -43,7 +43,7 @@ class App extends React.Component {
         body: JSON.stringify({ "email": loginInfo.email, "password": loginInfo.password })
     };
        console.log('hiii-zahraaaaaaaaaaaaaaa')
-       const response = await fetch('http://localhost:5000/api/login' , { method: 'POST',
+       const response = await fetch('http://localhost:5001/api/login' , { method: 'POST',
        headers: {
          'Content-Type': 'application/json',
        },
@@ -121,76 +121,7 @@ class Login extends React.Component{
     );
 }
 }
-  /*state = {
-    response: '',
-    post: '',
-    responseToPost: '',
-  };*/
-
-/* 
-
-
-
-
-  callApi = async () => {
-    console.log('hiii')
-    const response = await fetch('/api/hello');
-    const body = await response.json();
-    
-    if (response.status !== 200) throw Error(body.message);
-
-    return body;
-  };
-
-  handleSubmit = async e => {
-    e.preventDefault();
-    const response = await fetch('/api/world', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ post: this.state.post }),
-      
-    });
-    const body = await response.text();
-    console.log(body)
-    this.setState({ responseToPost: body });
-  }; */
-
- // render() {
-   // console.log('In Render');
-   // return (
-     // <div className="App">
-       // <header className="App-header">
-         // <img src={logo} className="App-logo" alt="logo" />
-          //<p>
-            //Edit <code>src/App.js</code> and save to reload.
-          //</p>
-          //<a
-            //className="App-link"
-            //href="https://reactjs.org"
-            //target="_blank"
-            //rel="noopener noreferrer"
-          //>
-            //Learn React
-          //</a>
-        //</header>
-        //<p>{this.state.response}</p>
-        //<form onSubmit={this.handleSubmit}>
-         // <p>
-          //  <strong>Post to Server:</strong>
-          //</p>
-          //<input
-            //type="text"
-            //value={this.state.post}
-           // onChange={e => this.setState({ post: e.target.value })}
-          ///>
-          //<button type="submit">Submit</button>
-        //</form>
-        //<p>{this.state.responseToPost}</p>
-      //</div>
-   // );
-  //}
+ 
 
   class NavBar extends React.Component {
     
@@ -242,11 +173,11 @@ class Login extends React.Component{
       const requestOptions = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' ,
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDU4MTk2MH0.kX_ehCHmVVCEsOWEyCJuanwbJEh6WWIbZGC2ChE8ExU' },
+          'Authorization': 'Bearer ${loginInfo.token}' },
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5000/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://localhost:5001/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -294,7 +225,7 @@ class Login extends React.Component{
 
       numberOfUnAll : '' ,
       numberOfSent: '' ,
-      clickedInbox : false ,
+      clickedInbox : true ,
       clickedSent: false
      }
       labels = {
@@ -324,11 +255,11 @@ class Login extends React.Component{
       const requestOptions = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' ,
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDU4MTk2MH0.kX_ehCHmVVCEsOWEyCJuanwbJEh6WWIbZGC2ChE8ExU' },
+          'Authorization': 'Bearer ${loginInfo.token}' },
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5000/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://localhost:5001/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -357,6 +288,19 @@ class Login extends React.Component{
       this.forceUpdate()
       this.state.clickedInbox=false;
     //  this.state.clickedSent=false 
+    }
+    updateUnseen(e){
+    //  e.preventDefault()
+      console.log('dre updateeee mikoneeeee')
+      this.callApi()
+      // 
+          .then(res =>{ this.setState({  numberOfUnAll: res.inbox , numberOfSent: res.sent})
+            this.state.clickedInbox=true 
+
+    })
+          .catch(err => console.log(err));
+console.log("tedade jdid " +this.state.numberOfUnAll)
+          this.forceUpdate()
     }
     render(){ 
     //  console.log(this.props.state.numberOfUnSeen)
@@ -393,7 +337,7 @@ else if(this.state.clickedInbox){
 </button>
      
       </div>
-     <EmailList />
+     <EmailList update={e=>this.updateUnseen(e)}/>
     </div>
    
     );
@@ -486,7 +430,7 @@ this.forceUpdate()
                   email={email}
                   handleEmailClick={this.handleEmailClick}/>
             ))}  */}
-            <EmailItem /> 
+            <EmailItem update={e=>this.props.update(e)}/> 
             
          
         </div>
@@ -532,7 +476,9 @@ this.forceUpdate()
         text : '' ,
         subject: '' ,
         date: '' ,
-        from: ''
+        from: '' ,
+        id: '' ,
+        status: ''
       }
     
     componentDidMount() {
@@ -551,11 +497,11 @@ this.forceUpdate()
       const requestOptions = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' ,
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDM4MzcxMH0.QF9MRwzU5VZsmP3RanKpKruRf83kQ2b2-qEMcuTBXuc' },
+          'Authorization': 'Bearer ${loginInfo.token}' },
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5000/api/receive/emails' , requestOptions)
+      const response = await fetch('http://localhost:5001/api/receive/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -570,19 +516,24 @@ this.forceUpdate()
       console.log('Label clicked: '+labelId);
       console.log('pydat krdm')
     }
-    alertClicked(text,date,e) {
+    alertClicked(email,e) {
       e.preventDefault();
-      this.selectedEmail.date=date
-      this.selectedEmail.text=text
-
+      this.selectedEmail.date=email.date
+      this.selectedEmail.text=email.text
+     this.selectedEmail.id=email.uid
+     this.selectedEmail.status=email.status
      this.myBoolean=true ;
      this.forceUpdate();
   
     }
-   backClicked(e){
+   backClicked(e , id){
     e.preventDefault();
 
      this.myBoolean=false ;
+     if(this.selectedEmail.status=='UNSEEN'){
+     this.markUnseen();
+     }
+     this.props.update();
      this.forceUpdate();
    }
     handleEmailClick() {
@@ -591,6 +542,40 @@ this.forceUpdate()
       this.props.handleEmailClick(this.props.email.id);
       console.log("i am zahra");
     }
+    markUnseen = async () => {
+        const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' ,
+            'Authorization': 'Bearer ${loginInfo.token}' },
+          body: JSON.stringify({ title: 'React POST Request Example' })
+      };
+        console.log('hiii-zahra')
+        const response = await fetch('http://localhost:5001/api/mark/seen' , {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' ,
+            'Authorization': 'Bearer ${loginInfo.token}' },
+          body: JSON.stringify({ "uid": this.selectedEmail.id })
+      })
+      //  .then(response => response.json())
+         const body = await response.json();
+         
+      console.log(body)
+      this.state.myBoolean=false;
+        if (response.status !== 200) throw Error(body.message);
+    
+        return body;
+      };
+    
+    callSeenApi(){
+      this.callSeenApi()
+      // 
+      .then( 
+      console.log( 'mark seeen')
+    )
+    .catch(err => console.log(err));
+  
+  
+      }
     
     render(){
       console.log('hii'+this.myBoolean)
@@ -601,7 +586,7 @@ this.forceUpdate()
 
         
           <div class="list-group" > 
-          <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email.text,email.date,e)} >
+          <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email,e)} >
             <div class="d-flex w-100 justify-content-between">
             <div className="checkbox">
         <input type="checkbox" />
@@ -688,11 +673,11 @@ this.forceUpdate()
       const requestOptions = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' ,
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDM4MzcxMH0.QF9MRwzU5VZsmP3RanKpKruRf83kQ2b2-qEMcuTBXuc' },
+          'Authorization': 'Bearer ${loginInfo.token}' },
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5000/api/receive/sent/emails' , requestOptions)
+      const response = await fetch('http://localhost:5001/api/receive/sent/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -862,7 +847,11 @@ class showText extends React.Component {
         selectedLabel : 1
       }
     }
-    
+    update(e){
+      e.preventDefault()
+      alert('successfully send')
+this.forceUpdate()
+}
     handleLabelClick(labelId){
       console.log('Label clicked: '+labelId);
       console.log('pydat krdm')
@@ -888,7 +877,7 @@ class showText extends React.Component {
         <div className="container">
           
            {/* onClick={this.handleUpdateMe.bind(this) }*/}
-          <ActionsRow />
+          <ActionsRow  updateScreen={e=>this.update(e)}/>
           <hr />
           <div className="row">
             <div className="col-12 col-sm-12 col-md-3 col-lg-2">
@@ -959,7 +948,7 @@ class showText extends React.Component {
       )
       }else{
         return(
-        <ComposeMail  />
+        <ComposeMail update={e=>this.props.updateScreen(e)} />
         )
       }
     } 
@@ -985,11 +974,11 @@ class showText extends React.Component {
       e.preventDefault();
       console.log("okkkkk")
       console.log(state);
-      fetch('http://localhost:5000/api/send/email', {
+      fetch('http://localhost:5001/api/send/email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
+          'authorization': 'Bearer ${loginInfo.token}'
         },
         body: JSON.stringify(state.email)
       }).then(response => {
@@ -1002,6 +991,10 @@ class showText extends React.Component {
             this.state.success=true
             this.forceUpdate()
           });
+          
+          }
+          else{
+            alert('try again')
         }
       })
     
@@ -1031,11 +1024,17 @@ class showText extends React.Component {
       )
     }else{
       return(
+<<<<<<< HEAD
         <EmailLabels/>
+=======
+        <div>
+   {e=> this.props.update(e)}
+    </div>
+>>>>>>> e2a92c12382392a55d14cf4af7882e19278d5cf7
       )
     }
-    }
   }
-  
+  }
+    
 
 export default App;
