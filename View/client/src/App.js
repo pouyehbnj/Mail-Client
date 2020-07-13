@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import {BootstrapTable, TableHeaderColumn} 
         from 'react-bootstrap-table'
-import {useTable} from 'react-table';
+//import {useTable} from 'react-table';
 
 import axios from 'axios';
 //import { response } from 'express';
@@ -43,7 +43,7 @@ class App extends React.Component {
         body: JSON.stringify({ "email": loginInfo.email, "password": loginInfo.password })
     };
        console.log('hiii-zahraaaaaaaaaaaaaaa')
-       const response = await fetch('http://192.168.112.209:5000/api/login' , { method: 'POST',
+       const response = await fetch('http://localhost:5001/api/login' , { method: 'POST',
        headers: {
          'Content-Type': 'application/json',
        },
@@ -246,7 +246,7 @@ class Login extends React.Component{
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.209:5000/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://localhost:5001/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -328,7 +328,7 @@ class Login extends React.Component{
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.209:5000/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://localhost:5001/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -555,7 +555,7 @@ this.forceUpdate()
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.209:5000/api/receive/emails' , requestOptions)
+      const response = await fetch('http://localhost:5001/api/receive/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -606,7 +606,9 @@ this.forceUpdate()
       </div>
 
         &nbsp;&nbsp;<span className="fa fa-star-o"></span>&nbsp;&nbsp;
+      
               <h5 class="mb-1">{email.subject}</h5>
+        
               <small class="text-muted">{email.date}</small>
             </div>
             <p class="mb-1">{email.text} </p>
@@ -678,7 +680,7 @@ this.forceUpdate()
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.209:5000/api/receive/sent/emails' , requestOptions)
+      const response = await fetch('http://localhost:5001/api/receive/sent/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -761,37 +763,6 @@ this.forceUpdate()
       )
     }
       }
-  /*  return (
-   <div className="App">
-        <header className="App-header">
-      {/*    <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-    </a> */
-        //</header>
-        //<p>{this.state.response}</p>
-      /*  <form onSubmit={this.handleSubmit}>
-         <p>
-           <strong>Post to Server:</strong>
-          </p>
-          <input
-            type="text"
-            value={this.state.post}
-           onChange={e => this.setState({ post: e.target.value })}
-          />
-          <button type="submit">Submit</button>
-        </form> 
-  <p>{this.state.responseToPost}</p> */
-      //</div>
-    //);
   
 
 class showText extends React.Component {
@@ -873,31 +844,27 @@ class showText extends React.Component {
    * Come options for showing how to emulate Gmail using Bootsrap 4.
    */
   class ActionsRow extends React.Component {
-    state = {
-      clicked: false
-    }
+    
+      clicked= false
+    
      handleComposeClick(state,e){   
       e.preventDefault()
-      state.clicked=true   
+      this.clicked=true   
        this.forceUpdate()
        console.log("hereeeee pouyeh")
      }
     render(){
+      console.log('bbinm chie'+ this.clicked) 
       if(!this.clicked){
       return (
         
       
         <div className="row"> 
           <div className="col-12 col-sm-12 col-md-3 col-lg-2">
-<<<<<<< HEAD
-            <a href="#" className="btn btn-danger btn-primary btn-block">
-              <i className="fa fa-edit"></i> Compose2
-=======
             <a href="#" className="btn btn-danger btn-primary btn-block"
             onClick={e => this.handleComposeClick(this.state,e)}>
               <i className="fa fa-edit"></i> Compose
               
->>>>>>> ca3ada2985012708c7ea9c2eb00509067c4ba402
             </a>
           </div>
           <div className="col-12 col-sm-12 col-md-9 col-lg-10">
@@ -952,7 +919,7 @@ class showText extends React.Component {
       e.preventDefault();
       console.log("okkkkk")
       console.log(state);
-      fetch('http://localhost:5000/api/send/email', {
+      fetch('http://localhost:5001/api/send/email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -978,14 +945,14 @@ class showText extends React.Component {
         <p>
           <h>To </h>
           <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setTos(this.state, e)} />
-        </p>
-        <p>
+        
+        
           <h>Subject </h>
           <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setState({ subject: e.target.value })} />
-        </p>
-        <p>
+        
+       
           <h> Email </h>
-          <SunEditor width="112%" height="100%" onChange={e => this.setState({ text: e })} />
+          <SunEditor width="70%" height="100%" onChange={e => this.setState({ text: e })} />
         </p>
         <button type="submit" className="btn btn-primary btn-block" style={{ height: 50, width: 70 }}
           onClick={e => this.sendEmail(this.state, e)}>Send</button>
