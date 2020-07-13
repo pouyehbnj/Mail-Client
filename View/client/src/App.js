@@ -6,6 +6,7 @@ import {BootstrapTable, TableHeaderColumn}
 import {useTable} from 'react-table';
 
 import axios from 'axios';
+//import { response } from 'express';
 
 
 
@@ -49,14 +50,17 @@ class App extends React.Component {
         console.log(body)
       return body;
     };
-    
+    updateMe() {
+      console.log('updating meeee')
+      this.forceUpdate();
+    }
   
   render(){
     if (loginInfo.token != "") {
       return (
         <div>
           <NavBar title="Étoile Email Manager" user={loginInfo.email} />
-          <MainContainer />
+          <MainContainer onClick={this.updateMe.bind(this)} />
         </div>
       )
     } else {
@@ -191,7 +195,7 @@ class Login extends React.Component{
           <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
           </button>
-          <img className="nav-logo" src="https://facebook.github.io/react/img/logo.svg" width="36" height="36" />
+          <img className="nav-logo" src="/haghighat.svg" width="36" height="36" />
           <a className="navbar-brand" href="#">{this.props.title}</a>
   
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -283,7 +287,9 @@ class Login extends React.Component{
     state ={
 
       numberOfUnAll : '' ,
-      numberOfSent: ''
+      numberOfSent: '' ,
+      clickedInbox : false ,
+      clickedSent: false
      }
       labels = {
       //Labels will be static for this example.
@@ -330,22 +336,87 @@ class Login extends React.Component{
       console.log('handleClick '+this.props.id);
       this.props.onClick(this.props.id);
     }
-    hi(e){
+    inboxClicked(e){
       e.preventDefault()
-      alert('hi')
+     // alert('hi')
+     this.state.clickedInbox=true 
+     this.forceUpdate()
+     this.state.clickedSent=false
+    // this.state.clickedInbox=false 
+    }
+    sentClicked(e){
+      e.preventDefault()
+      // alert('hi')
+      this.state.clickedSent=true 
+      this.forceUpdate()
+      this.state.clickedInbox=false;
+    //  this.state.clickedSent=false 
     }
     render(){ 
     //  console.log(this.props.state.numberOfUnSeen)
+    if(!this.state.clickedInbox && !this.state.clickedSent)
+{
+  console.log('11111')
+
       return (
+        
         <div>
-      <h6> Inbox   <span class="badge badge-secondary" onClick={e=>this.hi(e)}>{this.state.numberOfUnAll}</span></h6>
-      <h6>Sent  <span class="badge badge-secondary">{this.state.numberOfSent}</span></h6>
+          <button type="button" class="btn btn-primary" onClick={e=>this.inboxClicked(e)}>
+  Inbox <span class="badge badge-danger ml-3"> {this.state.numberOfUnAll}</span>
+</button>
+<button type="button" class="btn btn-primary" onClick={e=>this.sentClicked(e)}> 
+  Sent <span class="badge badge-danger ml-3"> {this.state.numberOfSent}</span>
+</button>
+     
       </div>
       );
+}
+else if(this.state.clickedInbox){
+ 
+
+  {
+    console.log('222222')
+    return (
+      <div>
+    <div>
+          <button type="button" class="btn btn-primary" onClick={e=>this.inboxClicked(e)}>
+  Inbox <span class="badge badge-danger ml-3"> {this.state.numberOfUnAll}</span>
+</button>
+<button type="button" class="btn btn-primary" onClick={e=>this.sentClicked(e)}> 
+  Sent <span class="badge badge-danger ml-3"> {this.state.numberOfSent}</span>
+</button>
+     
+      </div>
+     <EmailList />
+    </div>
+   
+    );
+   
+}
+}
+else if(this.state.clickedSent){
+  
+  {
+    console.log('33333')
+    return (
+      <div>
+          <button type="button" class="btn btn-primary" onClick={e=>this.inboxClicked(e)}>
+  Inbox <span class="badge badge-danger ml-3"> {this.state.numberOfUnAll}</span>
+</button>
+<button type="button" class="btn btn-primary" onClick={e=>this.sentClicked(e)}> 
+  Sent <span class="badge badge-danger ml-3"> {this.state.numberOfSent}</span>
+</button>
+     
+      <SentItem />
+    </div>
+    );
+}
+}
     }
   }
   
   class Tab extends React.Component {
+    
     render(){
       console.log(this.props.activeTab);
       // Classes to add to the <a> element
@@ -371,19 +442,37 @@ class Login extends React.Component{
   
   class EmailList extends React.Component {
     
+    state = {
+      inbox : 1 ,
+      sent : 0 
+    }
     handleEmailClick = (id) => {
       alert('Clicked'+id);
       console.log("hhhh");
     };
-  
+  showInbox(){
+   // e.preventDefault()
+    this.setState.inbox=1
+    this.forceUpdate();
+  }
+  showSent(){
+    //e.preventDefault()
+this.setState.inbox=0
+this.setState.sent=1
+this.forceUpdate()
+  }
     render(){
+      if(this.state.inbox==1){
       return (
+        
         <div>
           {/* Tabs created only as an example, they don't interact with the rest of the app. */}
-          <ul className="nav nav-tabs">
-            <Tab name="Inbox" activeTab={true} icon="fa-inbox" />
-          </ul>
-          <div >
+          
+        
+          <p> 
+
+
+</p>
             {/* EmailItem creation:
       {this.props.emails.map((email) => ( 
                 <EmailItem
@@ -391,10 +480,37 @@ class Login extends React.Component{
                   email={email}
                   handleEmailClick={this.handleEmailClick}/>
             ))}  */}
-            <EmailItem />
-          </div>
+            <EmailItem /> 
+            
+         
         </div>
       )
+          }
+          else{
+            return (
+        
+              <div>
+                {/* Tabs created only as an example, they don't interact with the rest of the app. */}
+                <ul className="nav nav-tabs">
+                  <Tab name="Inbox" activeTab={true} icon="fa-inbox" onClick={this.showInbox.bind(this)} />
+                </ul>
+                <ul className="nav nav-tabs">
+                  <Tab name="sent" activeTab={true} icon="fa-inbox" onClick={this.showSent.bind(this)} />
+                </ul>
+                <div >
+                  {/* EmailItem creation:
+            {this.props.emails.map((email) => ( 
+                      <EmailItem
+                        key={email.id}
+                        email={email}
+                        handleEmailClick={this.handleEmailClick}/>
+                  ))}  
+                  <EmailItem /> */}
+                  
+                </div>
+              </div>
+            )
+          }
     }
   }
   
@@ -404,29 +520,24 @@ class Login extends React.Component{
 
     myBoolean = false ;
     state = {
-      response: '',
-      response2: '' ,
-      state: '',
-      date1: '' ,
-      date2: '' ,
-      text1: '' ,
-      text2: '' ,
-      responseToPost: '',
-      myBoolean : false 
-    };
-    state2 = {
-      text: '',
-      date: '' ,
-    }
+      emails :[]
+      }
+      selectedEmail = {
+        text : '' ,
+        subject: '' ,
+        date: '' ,
+        from: ''
+      }
     
     componentDidMount() {
     
       this.callApi()
     // 
-        .then(res => this.setState({ response: res.emails[2].subject , response2: res.emails[3].subject 
-        ,date1: res.emails[2].date , date2: res.emails[3].date ,text1: res.emails[2].text , text2: res.emails[3].text}))
-        .catch(err => console.log(err));
-        console.log(this.state.response)
+    .then(res => { this.setState({emails:res.emails}) 
+    console.log( 'hiii'+this.state.emails[0].subject)
+  })
+  .catch(err => console.log(err));
+
 
     }
     callApi = async () => {
@@ -452,29 +563,15 @@ class Login extends React.Component{
       console.log(this.state.myBoolean);
       console.log('Label clicked: '+labelId);
       console.log('pydat krdm')
-     // this.myBoolean=true ;
-    //  this.forceUpdate();
-     // this.setState({
-     //   selectedLabel: labelId
-    //  });
     }
- /*   render(){
-      return (
-        <p className="center">The email box is empty ....fuck you.</p>
-      )
-    }*/
     alertClicked(text,date,e) {
       e.preventDefault();
-      this.state2.text=text ;
-      this.state2.date=date ;
-      //alert('You clicked the third ListGroupItem');
+      this.selectedEmail.date=date
+      this.selectedEmail.text=text
+
      this.myBoolean=true ;
      this.forceUpdate();
-    this.state.myBoolean=false ;
-   //  let content = <showText />;
-    // var obj = new showText ;
-  // obj.hi(text)
-   //obj.render();
+  
     }
    backClicked(e){
     e.preventDefault();
@@ -492,100 +589,80 @@ class Login extends React.Component{
     render(){
       console.log('hii'+this.myBoolean)
       if(!this.myBoolean){
-          return (
-            <div class="list-group" > 
-         
-            <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(this.state.text1,this.state.date1,e)} >
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{this.state.response}</h5>
-                <small class="text-muted">{this.state.date1}</small>
-              </div>
-              <p class="mb-1">{this.state.text} </p>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(this.state.text2,this.state.date2,e)}>
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{this.state.response2}</h5>
-                <small class="text-muted">{this.state.date2}</small>
-              </div>
-              <p class="mb-1">{this.state.text2}</p>
-           
-            </a>
-          </div>
-  
-          );
-      }
-      else{
-        return(
-        <div class="list-group" > 
-         
-        <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start"  >
-          <div class="d-flex w-100 justify-content-between">
-          {/*  <h5 class="mb-1">{this.state.response}</h5> */}
-            <small class="text-muted">{this.state2.date}</small>
-          </div>
-          <p class="mb-1">{this.state2.text} </p>
-        </a>
-  
-        <button onClick={e=>this.backClicked(e)}>
-           Back
-      </button>
-        </div>
-      
-        );
-      }
-
-
-
-
-     /* return (
-        
-        <li className="list-group-item d-flex justify-content-start" onClick={this.handleEmailClick.bind(this)}>
+        return (
+          <div>
+      {this.state.emails.map(email => (
+          <div class="list-group" > 
+          <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email.text,email.date,e)} >
+            <div class="d-flex w-100 justify-content-between">
             <div className="checkbox">
-              <input type="checkbox" />
+        <input type="checkbox" />
+      </div>
+
+        &nbsp;&nbsp;<span className="fa fa-star-o"></span>&nbsp;&nbsp;
+              <h5 class="mb-1">{email.subject}</h5>
+              <small class="text-muted">{email.date}</small>
             </div>
-  
-            &nbsp;&nbsp;<span className="fa fa-star-o"></span>&nbsp;&nbsp;
-            <span className="name">{this.props.email.from}</span> 
-            <span>{this.props.email.subject}</span>
-            
-            <span className="ml-auto p-2">
-              <span className="fa fa-paperclip">&nbsp;&nbsp;</span>
-              <span className="badge badge-default badge-pill">{this.props.email.time}</span>
-            </span>
-          </li>
+            <p class="mb-1">{email.text} </p>
+          </a>
           
-      )*/
+          
+        </div>
+  ))}
+  </div>
+        );
+    }
+    else{
+      return(
+       
+      <div class="list-group" > 
+       
+      <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start"  >
+        <div class="d-flex w-100 justify-content-between">
+        {/*  <h5 class="mb-1">{this.state.response}</h5> */}
+          <small class="text-muted">{this.selectedEmail.date}</small>
+        </div>
+        <p class="mb-1">{this.selectedEmail.text} </p>
+      </a>
+
+      <button onClick={e=>this.backClicked(e)}>
+         Back
+    </button>
+      </div>
+      );
+    }
+
+
+
+
+    
     }
   }
-  
-  class EmptyBox extends React.Component {
+  class SentItem extends React.Component{
     myBoolean = false ;
     state = {
-      response: '',
-      response2: '' ,
-      state: '',
-      date1: '' ,
-      date2: '' ,
-      text1: '' ,
-      text2: '' ,
-      responseToPost: '',
-      myBoolean : false 
-    };
-    state2 = {
-      text: '',
-      date: '' ,
+    emails :[]
     }
-    
+    selectedEmail = {
+      text : '' ,
+      subject: '' ,
+      date: '' ,
+      from: ''
+    }
     componentDidMount() {
     
       this.callApi()
     // 
-        .then(res => this.setState({ response: res.emails[2].subject , response2: res.emails[3].subject 
-        ,date1: res.emails[2].date , date2: res.emails[3].date ,text1: res.emails[2].text , text2: res.emails[3].text}))
-        .catch(err => console.log(err));
-        console.log(this.state.response)
+   
 
-    }
+        .then(res => { this.setState({emails:res.emails}) 
+          console.log( 'hiii'+this.state.emails[0].subject)
+        })
+        .catch(err => console.log(err));
+    
+       
+       
+      }
     callApi = async () => {
       console.log("inja :"+this.myBoolean)
       const requestOptions = {
@@ -595,7 +672,7 @@ class Login extends React.Component{
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.241:5000/api/receive/emails' , requestOptions)
+      const response = await fetch('http://192.168.112.209:5000/api/receive/sent/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -605,33 +682,14 @@ class Login extends React.Component{
   
       return body;
     };
-    handleLabelClick(labelId){
-      console.log(this.state.myBoolean);
-      console.log('Label clicked: '+labelId);
-      console.log('pydat krdm')
-     // this.myBoolean=true ;
-    //  this.forceUpdate();
-     // this.setState({
-     //   selectedLabel: labelId
-    //  });
-    }
- /*   render(){
-      return (
-        <p className="center">The email box is empty ....fuck you.</p>
-      )
-    }*/
     alertClicked(text,date,e) {
       e.preventDefault();
-      this.state2.text=text ;
-      this.state2.date=date ;
-      //alert('You clicked the third ListGroupItem');
+      this.selectedEmail.date=date
+      this.selectedEmail.text=text
+
      this.myBoolean=true ;
      this.forceUpdate();
-    this.state.myBoolean=false ;
-   //  let content = <showText />;
-    // var obj = new showText ;
-  // obj.hi(text)
-   //obj.render();
+  
     }
    backClicked(e){
     e.preventDefault();
@@ -640,49 +698,61 @@ class Login extends React.Component{
      this.forceUpdate();
    }
     render(){
-      console.log('hii'+this.myBoolean)
-    if(!this.myBoolean){
+      if(!this.myBoolean){
         return (
+          <div>
+      {this.state.emails.map(email => (
           <div class="list-group" > 
-       
-          <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(this.state.text1,this.state.date1,e)} >
+          <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email.text,email.date,e)} >
             <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">{this.state.response}</h5>
-              <small class="text-muted">{this.state.date1}</small>
-            </div>
-            <p class="mb-1">{this.state.text} </p>
-            <small class="text-muted">Donec id elit non mi porta.</small>
-          </a>
-          <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(this.state.text2,this.state.date2,e)}>
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">{this.state.response2}</h5>
-              <small class="text-muted">{this.state.date2}</small>
-            </div>
-            <p class="mb-1">{this.state.text2}</p>
-            <small class="text-muted">Donec id elit non mi porta.</small>
-          </a>
-        </div>
+            <div className="checkbox">
+        <input type="checkbox" />
+      </div>
 
+        &nbsp;&nbsp;<span className="fa fa-star-o"></span>&nbsp;&nbsp;
+              <h5 class="mb-1">{email.subject}</h5>
+              <small class="text-muted">{email.date}</small>
+            </div>
+            <p class="mb-1">{email.text} </p>
+          </a>
+          
+          
+        </div>
+  ))}
+  </div>
         );
     }
     else{
       return(
+       
       <div class="list-group" > 
        
       <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start"  >
         <div class="d-flex w-100 justify-content-between">
         {/*  <h5 class="mb-1">{this.state.response}</h5> */}
-          <small class="text-muted">{this.state2.date}</small>
+          <small class="text-muted">{this.selectedEmail.date}</small>
         </div>
-        <p class="mb-1">{this.state2.text} </p>
+        <p class="mb-1">{this.selectedEmail.text} </p>
       </a>
 
       <button onClick={e=>this.backClicked(e)}>
          Back
     </button>
       </div>
-    
       );
+    }
+
+
+    }
+  }
+
+  
+  class EmptyBox extends React.Component {
+    
+    render(){
+      return (
+        <p className="center">The email box is empty {this.props.id}</p>
+      )
     }
       }
   /*  return (
@@ -717,7 +787,7 @@ class Login extends React.Component{
       //</div>
     //);
   
-}
+
 class showText extends React.Component {
   hi = (text) => {
     console.log('omd inja')
@@ -761,53 +831,7 @@ class showText extends React.Component {
       });
     }
     
-  /*  static defaultProps = {
-      //Emails to be displayed on the Email List
-      emails : [
-        {
-          id: 0,
-          labelId: 1,
-          from: 'zahra dehghanpour ',
-          subject: ' Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-          time: "11:15"
-        },
-        {
-          id: 1,
-          labelId: 1,
-          from: 'pouyeh banijamali ',
-          subject: ' Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-          time: "22:08"
-        },
-        {
-          id: 2,
-          labelId: 1,
-          from: 'zeynab sobhani',
-          subject: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-          time: "19:12"
-        },
-        {
-          id: 3,
-          labelId: 1,
-          from: 'shaghyegh tavakoli',
-          subject: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-          time: "18:35"
-        },
-        {
-          id: 4,
-          labelId: 2,
-          from: 'Emily Iverson',
-          subject: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-          time: "14:05"
-        },
-        {
-          id: 5,
-          labelId: 3,
-          from: 'Michael Neal',
-          subject: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-          time: "14:05"
-        }
-      ]
-    };*/
+  
   
     render() {
      // console.log(this.props.emails[0].labelId);
@@ -815,7 +839,7 @@ class showText extends React.Component {
       
      let content = null;
     //  if(filteredEmails.length > 0){
-         content = <EmailList />;
+         content = <EmailLabels />;
   //    } else {
    //      content = <EmptyBox />;
   //    }
@@ -826,7 +850,7 @@ class showText extends React.Component {
           <hr />
           <div className="row">
             <div className="col-12 col-sm-12 col-md-3 col-lg-2">
-              <EmailLabels onLabelClick={this.handleLabelClick.bind(this)} />
+             
             </div> 
             <div className="col-12 col-sm-12 col-md-9 col-lg-10">
               {content}        
@@ -848,7 +872,7 @@ class showText extends React.Component {
         <div className="row"> 
           <div className="col-12 col-sm-12 col-md-3 col-lg-2">
             <a href="#" className="btn btn-danger btn-primary btn-block">
-              <i className="fa fa-edit"></i> Compose
+              <i className="fa fa-edit"></i> Compose2
             </a>
           </div>
           <div className="col-12 col-sm-12 col-md-9 col-lg-10">
