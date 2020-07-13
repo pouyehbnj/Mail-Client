@@ -294,7 +294,7 @@ class Login extends React.Component{
 
       numberOfUnAll : '' ,
       numberOfSent: '' ,
-      clickedInbox : false ,
+      clickedInbox : true ,
       clickedSent: false
      }
       labels = {
@@ -358,6 +358,19 @@ class Login extends React.Component{
       this.state.clickedInbox=false;
     //  this.state.clickedSent=false 
     }
+    updateUnseen(e){
+    //  e.preventDefault()
+      console.log('dre updateeee mikoneeeee')
+      this.callApi()
+      // 
+          .then(res =>{ this.setState({  numberOfUnAll: res.inbox , numberOfSent: res.sent})
+            this.state.clickedInbox=true 
+
+    })
+          .catch(err => console.log(err));
+console.log("tedade jdid " +this.state.numberOfUnAll)
+          this.forceUpdate()
+    }
     render(){ 
     //  console.log(this.props.state.numberOfUnSeen)
     if(!this.state.clickedInbox && !this.state.clickedSent)
@@ -393,7 +406,7 @@ else if(this.state.clickedInbox){
 </button>
      
       </div>
-     <EmailList />
+     <EmailList update={e=>this.updateUnseen(e)}/>
     </div>
    
     );
@@ -486,7 +499,7 @@ this.forceUpdate()
                   email={email}
                   handleEmailClick={this.handleEmailClick}/>
             ))}  */}
-            <EmailItem /> 
+            <EmailItem update={e=>this.props.update(e)}/> 
             
          
         </div>
@@ -532,7 +545,9 @@ this.forceUpdate()
         text : '' ,
         subject: '' ,
         date: '' ,
-        from: ''
+        from: '' ,
+        id: '' ,
+        status: ''
       }
     
     componentDidMount() {
@@ -570,19 +585,24 @@ this.forceUpdate()
       console.log('Label clicked: '+labelId);
       console.log('pydat krdm')
     }
-    alertClicked(text,date,e) {
+    alertClicked(email,e) {
       e.preventDefault();
-      this.selectedEmail.date=date
-      this.selectedEmail.text=text
-
+      this.selectedEmail.date=email.date
+      this.selectedEmail.text=email.text
+     this.selectedEmail.id=email.uid
+     this.selectedEmail.status=email.status
      this.myBoolean=true ;
      this.forceUpdate();
   
     }
-   backClicked(e){
+   backClicked(e , id){
     e.preventDefault();
 
      this.myBoolean=false ;
+     if(this.selectedEmail.status=='UNSEEN'){
+     this.markUnseen();
+     }
+     this.props.update();
      this.forceUpdate();
    }
     handleEmailClick() {
@@ -591,6 +611,40 @@ this.forceUpdate()
       this.props.handleEmailClick(this.props.email.id);
       console.log("i am zahra");
     }
+    markUnseen = async () => {
+        const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' ,
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDM4MzcxMH0.QF9MRwzU5VZsmP3RanKpKruRf83kQ2b2-qEMcuTBXuc' },
+          body: JSON.stringify({ title: 'React POST Request Example' })
+      };
+        console.log('hiii-zahra')
+        const response = await fetch('http://localhost:5001/api/mark/seen' , {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' ,
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDM4MzcxMH0.QF9MRwzU5VZsmP3RanKpKruRf83kQ2b2-qEMcuTBXuc' },
+          body: JSON.stringify({ "uid": this.selectedEmail.id })
+      })
+      //  .then(response => response.json())
+         const body = await response.json();
+         
+      console.log(body)
+      this.state.myBoolean=false;
+        if (response.status !== 200) throw Error(body.message);
+    
+        return body;
+      };
+    
+    callSeenApi(){
+      this.callSeenApi()
+      // 
+      .then( 
+      console.log( 'mark seeen')
+    )
+    .catch(err => console.log(err));
+  
+  
+      }
     
     render(){
       console.log('hii'+this.myBoolean)
@@ -599,7 +653,7 @@ this.forceUpdate()
           <div>
       {this.state.emails.map(email => (
           <div class="list-group" > 
-          <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email.text,email.date,e)} >
+          <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email,e)} >
             <div class="d-flex w-100 justify-content-between">
             <div className="checkbox">
         <input type="checkbox" />
@@ -633,7 +687,7 @@ this.forceUpdate()
         <p class="mb-1">{this.selectedEmail.text} </p>
       </a>
 
-      <button onClick={e=>this.backClicked(e)}>
+      <button onClick={e=>this.backClicked(e , this.selectedEmail.id)}>
          Back
     </button>
       </div>
@@ -945,12 +999,12 @@ class showText extends React.Component {
         <p>
           <h>To </h>
           <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setTos(this.state, e)} />
-        
-        
+        </p>
+       
           <h>Subject </h>
           <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setState({ subject: e.target.value })} />
         
-       
+        <p>
           <h> Email </h>
           <SunEditor width="70%" height="100%" onChange={e => this.setState({ text: e })} />
         </p>
