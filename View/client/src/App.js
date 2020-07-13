@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import {BootstrapTable, TableHeaderColumn} 
         from 'react-bootstrap-table'
-import {useTable} from 'react-table';
+//import {useTable} from 'react-table';
 
 import axios from 'axios';
 //import { response } from 'express';
@@ -608,9 +608,9 @@ this.forceUpdate()
       </div>
 
         &nbsp;&nbsp;<span className="fa fa-star-o"></span>&nbsp;&nbsp;
-       
-       
+      
               <h5 class="mb-1">{email.subject}</h5>
+        
               <small class="text-muted">{email.date}</small>
             </div>
             <p class="mb-1">{email.text} </p>
@@ -778,37 +778,6 @@ this.forceUpdate()
       )
     }
       }
-  /*  return (
-   <div className="App">
-        <header className="App-header">
-      {/*    <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-    </a> */
-        //</header>
-        //<p>{this.state.response}</p>
-      /*  <form onSubmit={this.handleSubmit}>
-         <p>
-           <strong>Post to Server:</strong>
-          </p>
-          <input
-            type="text"
-            value={this.state.post}
-           onChange={e => this.setState({ post: e.target.value })}
-          />
-          <button type="submit">Submit</button>
-        </form> 
-  <p>{this.state.responseToPost}</p> */
-      //</div>
-    //);
   
 
 class showText extends React.Component {
@@ -890,16 +859,17 @@ class showText extends React.Component {
    * Come options for showing how to emulate Gmail using Bootsrap 4.
    */
   class ActionsRow extends React.Component {
-    state = {
-      clicked: false
-    }
+    
+      clicked= false
+    
      handleComposeClick(state,e){   
       e.preventDefault()
-      state.clicked=true   
+      this.clicked=true   
        this.forceUpdate()
        console.log("hereeeee pouyeh")
      }
     render(){
+      console.log('bbinm chie'+ this.clicked) 
       if(!this.clicked){
       return (
         
@@ -950,14 +920,17 @@ class showText extends React.Component {
   class ComposeMail extends React.Component {
 
     state = {
+      email:{
       to: [],
       subject: '',
       text: ''
+    },
+    success:false
     }
   
     setTos(state, e) {
-      state.to = []
-      state.to = e.target.value.split(",")
+      state.email.to = []
+      state.email.to = e.target.value.split(",")
   
     }
    sendEmail(state, e) {
@@ -970,14 +943,16 @@ class showText extends React.Component {
           'Content-Type': 'application/json',
           'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
         },
-        body: JSON.stringify(state)
+        body: JSON.stringify(state.email)
       }).then(response => {
         if (response.ok) {
           response.json().then(json => {
             console.log(json);
-            state.token = json.token
+            
             console.log('now:')
             console.log(state)
+            this.state.success=true
+            this.forceUpdate()
           });
         }
       })
@@ -985,25 +960,32 @@ class showText extends React.Component {
     
     }    
     render(){
+      if(!this.state.success){
       return (
         <div>
         <p>
           <h>To </h>
           <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setTos(this.state, e)} />
         </p>
+
         <p>
           <h>Subject </h>
           <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setState({ subject: e.target.value })} />
         </p>
-        <p>
+        <p>       
           <h> Email </h>
-          <SunEditor width="112%" height="100%" onChange={e => this.setState({ text: e })} />
+          <SunEditor width="70%" height="100%" onChange={e => this.setState({ text: e })} />
         </p>
         <button type="submit" className="btn btn-primary btn-block" style={{ height: 50, width: 70 }}
           onClick={e => this.sendEmail(this.state, e)}>Send</button>
 
       </div>
       )
+    }else{
+      return(
+        <MainContainer/>
+      )
+    }
     }
   }
   
