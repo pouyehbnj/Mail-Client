@@ -41,7 +41,7 @@ module.exports = new class ClientController {
                     await results.forEach(result => {
                         
                         email = {}
-                        email["date"] = result.parts[1].body.date[0].slice(0,result.parts[1].body.date[0].length - 9)
+                        email["date"] = result.parts[1].body.date[0].slice(0,22)
                         email["subject"] = result.parts[1].body.subject[0]
                         email["from"] = result.parts[1].body.from[0]
                         email["status"] = filter
@@ -56,7 +56,7 @@ module.exports = new class ClientController {
                        
 
                     })
-                    console.log(emails)
+                    //console.log(emails)
                     res(emails)
 
                 })
@@ -70,14 +70,20 @@ module.exports = new class ClientController {
     }
 
     async login(req, res) {
+        console.log("req.bodyyyyyy:")
+        console.log(req.body)
+        var hostMail
+        if (req.body.email.includes("gmail"))
+            hostMail = 'imap.gmail.com'
+         else hostMail = 'imap.mail.yahoo.com'
         var configConn = {
             imap: {
                 user: req.body.email,
                 password: req.body.password,
-                host: 'imap.gmail.com',
+                host: hostMail,
                 port: 993,
                 tls: true,
-                authTimeout: 3000
+                authTimeout: 9000
             }
         };
         var token = jwt.sign(configConn, "secretKey");
@@ -93,9 +99,20 @@ module.exports = new class ClientController {
                         success: true,
                         token: token
                     })
+                }else{
+                    return res.status(400).json({
+                        success: false,
+                        message: "wrong credentials"
+                    })
                 }
 
             })
+            // .catch(err =>{
+            //     return res.status(400).json({
+            //         success: false,
+            //         message: "wrong credentials"
+            //     })
+            // })
 
             // }
         })
@@ -117,7 +134,7 @@ module.exports = new class ClientController {
             var emails = []
             var email = {};
             imaps.connect({ imap: user }).then(async function (connection) {
-                await that.fetchMails('INBOX', connection, 'UNSEEN').then(async UnseenResualt => {
+                await that.fetchMails('INBOX', connection, 'UNSEEN',emails).then(async UnseenResualt => {
                     emails = UnseenResualt
                     console.log("unseens:")
                     console.log(emails)
@@ -149,7 +166,8 @@ module.exports = new class ClientController {
         }
 
         this.getUserByToken(req.token).then(user => {
-
+            if(user.host.includes("yahoo"))
+                user.host = 'smtp.mail.yahoo.com'
             var transporter = nodemailer.createTransport({
                 host: user.host,
                 secure: false,
@@ -167,7 +185,8 @@ module.exports = new class ClientController {
                 from: user.user,
                 to: req.body.to,
                 subject: req.body.subject,
-                text: req.body.text
+               // text: req.body.text,
+                html:req.body.text
             }
             console.log(mailOptions)
             transporter.sendMail(mailOptions, function (error, info) {
@@ -188,6 +207,7 @@ module.exports = new class ClientController {
 
     async receiveSentEmails(req, res) {
         var that = this
+        
         const bearerHeader = req.headers['authorization']
         if (typeof bearerHeader !== 'undefined') {
             var bearer = bearerHeader.split(' ')
@@ -293,6 +313,41 @@ module.exports = new class ClientController {
         })
     })
 
+    }
+    async getNumberOfEmails(req,res){
+        var that = this
+        var hostMail 
+
+        const bearerHeader = req.headers['authorization']
+        if (typeof bearerHeader !== 'undefined') {
+            var bearer = bearerHeader.split(' ')
+            var bearerToken = bearer[1]
+            req.token = bearerToken
+        }
+
+        this.getUserByToken(req.token).then(user => {
+            imaps.connect({ imap: user }).then(async function (connection) {
+            that.fetchMails('INBOX', connection, 'UNSEEN',[]).then(async UnseenResult => {
+                console.log("unseen:"+UnseenResult.length)
+                if (user.host.includes("gmail"))
+
+
+                
+                    hostMail = 'Gmail'
+                else hostMail = 'Yahoo'
+                await that.fetchMails('[' + hostMail + ']/Sent Mail', connection, 'ALL', []).then(sentResult => {
+                    console.log("unseen:"+sentResult.length)
+                    return res.status(200).json({
+                        success: true,
+                        inbox: UnseenResult.length,
+                        sent:sentResult.length
+                    })
+
+                })
+                
+            })
+        })
+    })
     }
 
 }
