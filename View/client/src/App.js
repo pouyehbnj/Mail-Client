@@ -19,27 +19,38 @@ class App extends React.Component {
     super(props);
   }
   login(){
-    var api = "http://192.168.112.209:5000/api/login";
-    var request = {
-      method: 'post',
-      url: api,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // data: { "email": loginInfo.email, "password": loginInfo.password }
-      data: { "username": loginInfo.email, "password": loginInfo.password }
-    }
-    axios(request)
-      .then(response => {
-        console.log(response)
-        loginInfo.token = response.data.token;
+    this.callApi()
+    // 
+        .then(response => {
+        loginInfo.token = response.token;
         console.log('loginIngo', JSON.stringify(loginInfo))
         this.forceUpdate();
-      }).catch(error => {
-        alert("Wrong password")
-        window.location.reload(false);
-      })
+         } )
+       
+      
   }
+    callApi = async () => {
+      console.log("injaaaaaaa :" +loginInfo.email)
+      const requestOptions = {
+        method: 'POST',
+        body: JSON.stringify({ "email": loginInfo.email, "password": loginInfo.password })
+    };
+       console.log('hiii-zahraaaaaaaaaaaaaaa')
+       const response = await fetch('http://192.168.112.209:5000/api/login' , { method: 'POST',
+       headers: {
+         'Content-Type': 'application/json',
+       },
+       body:  JSON.stringify({ "email": loginInfo.email, "password": loginInfo.password })
+     })
+    //  .then(response => response.json())
+       console.log('response'+response)
+       const body = await response.json();
+       
+        console.log(body)
+      return body;
+    };
+    
+  
   render(){
     if (loginInfo.token != "") {
       return (
@@ -225,7 +236,7 @@ class Login extends React.Component{
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.241:5000/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://192.168.112.209:5000/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -305,7 +316,7 @@ class Login extends React.Component{
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.241:5000/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://192.168.112.209:5000/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -427,7 +438,7 @@ class Login extends React.Component{
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.241:5000/api/receive/emails' , requestOptions)
+      const response = await fetch('http://192.168.112.209:5000/api/receive/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
