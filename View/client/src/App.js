@@ -44,7 +44,7 @@ class App extends React.Component {
         body: JSON.stringify({ "email": loginInfo.email, "password": loginInfo.password })
     };
        console.log('hiii-zahraaaaaaaaaaaaaaa')
-       const response = await fetch('http://localhost:5000/api/login' , { method: 'POST',
+       const response = await fetch('http://192.168.112.251:5000/api/login' , { method: 'POST',
        headers: {
          'Content-Type': 'application/json',
        },
@@ -66,14 +66,14 @@ class App extends React.Component {
     if (loginInfo.token != "") {
       return (
         <div>
-          <NavBar title="Étoile Email Manager" user={loginInfo.email} />
+          <NavBar title="Email Manager" user={loginInfo.email} />
           <MainContainer onClick={this.updateMe.bind(this)} />
         </div>
       )
     } else {
       return (
         <div>
-          <NavBar title="Étoile Email Manager" user={loginInfo.email} />
+          <NavBar title="Email Manager" user={loginInfo.email} />
           <div className="auth-wrapper">
             <div className="auth-inner">
               <Login onClick={this.login.bind(this)} />
@@ -133,7 +133,7 @@ class Login extends React.Component{
           <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
           </button>
-          <img className="nav-logo" src="/haghighat.svg" width="36" height="36" />
+          {/* <img className="nav-logo" src="/haghighat.svg" width="36" height="36" /> */}
           <a className="navbar-brand" href="#">{this.props.title}</a>
   
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -146,9 +146,9 @@ class Login extends React.Component{
             <li className="nav-item active">
             <a className="nav-link" href="#">&nbsp;<i className="fa fa-th" aria-hidden="true"></i>&nbsp;</a>
             </li>
-            {/*<li className="nav-item active"> 
-            <a className="nav-link" href="#">{this.props.user} <span className="sr-only">(current)</span><i className="fa fa-angle-down" aria-hidden="true"></i></a>
-      </li> */}
+           <li className="nav-item active"> 
+            <a className="nav-link" href="#">{loginInfo.user} <span className="sr-only">(current)</span><i className="fa fa-angle-down" aria-hidden="true"></i></a>
+      </li> 
           </ul>
           </div>
         </nav>
@@ -179,7 +179,7 @@ class Login extends React.Component{
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5000/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://192.168.112.251:5000/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -262,7 +262,7 @@ class Login extends React.Component{
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5000/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://192.168.112.251:5000/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -298,11 +298,9 @@ class Login extends React.Component{
       this.callApi()
       // 
           .then(res =>{ this.setState({  numberOfUnAll: res.inbox , numberOfSent: res.sent})
-            this.state.clickedInbox=true 
-
-    })
+            this.state.clickedInbox=true})
           .catch(err => console.log(err));
-console.log("tedade jdid " +this.state.numberOfUnAll)
+          console.log("tedade jdid " +this.state.numberOfUnAll)
           this.forceUpdate()
     }
     render(){ 
@@ -330,19 +328,35 @@ else if(this.state.clickedInbox){
   {
     console.log('222222')
     return (
+
       <div>
     <div>
+    <div className="container">
+        <div className="row">
+          <div className="col-12 col-sm-12 col-md-3 col-lg-2">
+            
+          <div>
           <button type="button" class="btn btn-primary" onClick={e=>this.inboxClicked(e)}>
   Inbox <span class="badge badge-danger ml-3"> {this.state.numberOfUnAll}</span>
 </button>
+<p>
+
+  
+</p>
 <button type="button" class="btn btn-primary" onClick={e=>this.sentClicked(e)}> 
-  Sent <span class="badge badge-danger ml-3"> {this.state.numberOfSent}</span>
+  Sent  <span class="badge badge-danger ml-3"> {this.state.numberOfSent} </span>
 </button>
-     
+</div>
+</div> 
+          <div className="col-12 col-sm-12 col-md-9 col-lg-10">
+          <EmailList update={e=>this.updateUnseen(e)}/> 
+          </div>
+        </div>
       </div>
-     <EmailList update={e=>this.updateUnseen(e)}/>
-    </div>
-   
+     
+     
+   </div>
+   </div>
     );
    
 }
@@ -353,15 +367,33 @@ else if(this.state.clickedSent){
     console.log('33333')
     return (
       <div>
+    <div>
+    <div className="container">
+        <div className="row">
+          <div className="col-12 col-sm-12 col-md-3 col-lg-2">
+            
+          <div>
           <button type="button" class="btn btn-primary" onClick={e=>this.inboxClicked(e)}>
   Inbox <span class="badge badge-danger ml-3"> {this.state.numberOfUnAll}</span>
 </button>
+<p>
+
+
+</p>
 <button type="button" class="btn btn-primary" onClick={e=>this.sentClicked(e)}> 
   Sent <span class="badge badge-danger ml-3"> {this.state.numberOfSent}</span>
 </button>
+</div>
+</div> 
+          <div className="col-12 col-sm-12 col-md-9 col-lg-10">
+          <SentItem /> 
+          </div>
+        </div>
+      </div>
      
-      <SentItem />
-    </div>
+     
+   </div>
+   </div>
     );
 }
 }
@@ -506,7 +538,7 @@ this.forceUpdate()
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5000/api/receive/emails' , requestOptions)
+      const response = await fetch('http://192.168.112.251:5000/api/receive/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -527,6 +559,7 @@ this.forceUpdate()
       this.selectedEmail.text=email.text
      this.selectedEmail.id=email.uid
      this.selectedEmail.status=email.status
+     this.selectedEmail.from=email.from
      this.myBoolean=true ;
      this.forceUpdate();
   
@@ -537,6 +570,13 @@ this.forceUpdate()
      this.myBoolean=false ;
      if(this.selectedEmail.status=='UNSEEN'){
      this.markUnseen();
+     this.callApi()
+    // 
+    .then(res => { this.setState({emails:res.emails}) 
+    console.log( 'hiii'+this.state.emails[0].subject)
+  })
+  .catch(err => console.log(err));
+
      }
      this.props.update();
      this.forceUpdate();
@@ -615,31 +655,74 @@ this.forceUpdate()
     render(){
       console.log('hii'+this.myBoolean)
       if(!this.myBoolean || this.deleted){
+        
         return (
           <div>
       {this.state.emails.map(email => (
+<div>
+{email.booleanStatus ? (
+    //     <div class="list-group" > 
+    //     <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email,e)} >
+    //       <div class="d-flex w-100 justify-content-between">
+    //       <div className="checkbox">
+    //   <input type="checkbox" />
+    // </div>
 
-        
-          <div class="list-group" > 
-          <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email,e)} >
-            <div class="d-flex w-100 justify-content-between">
-            <div className="checkbox">
-        <input type="checkbox" />
-      </div>
-
-        &nbsp;&nbsp;<span className="fa fa-star-o"></span>&nbsp;&nbsp;
+    //  <span className="fa fa-star-o"></span>
+    
+    //         <h5 class="mb-1">{email.subject}</h5>
       
-              <h5 class="mb-1">{email.subject}</h5>
+    //         <small class="text-muted">{email.date}</small>
+    //       </div>
+    //       <p class="mb-1">{email.text} </p>
+          
+    //     </a>
         
-              <small class="text-muted">{email.date}</small>
-            </div>
-            <p class="mb-1">{email.text} </p>
+        
+    //   </div>
+    <li className="list-group-item d-flex" onClick={e=>this.alertClicked(email,e)}>
+
+    {/* <div className="col-4">{label_one}{label_two}</div> */}
+    <div classNamess="col-8">Subject: {email.subject}</div>
+
+    <span className="ml-auto p-2">
+      <span className="badge badge-default badge-pill">{email.date}</span>
+    </span>
+
+
+  </li>
+      ) : (
+      //   <div class="list-group" > 
+      //     <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email,e)} >
+      //       <div class="d-flex w-100 justify-content-between">
+      //       <div className="checkbox">
+      //   <input type="checkbox" />
+      // </div>
+
+      //  <span className="fa fa-star-o"></span>
+      
+      //         <h5 class="mb-1">{email.subject}</h5>
+        
+      //         <small class="text-muted">{email.date}</small>
+      //       </div>
+      //       <p class="mb-1">{email.text} </p>
             
-          </a>
+      //     </a>
           
           
-        </div>
-      
+      //   </div>
+      <li className="list-group-item d-flex  list-group-item-info" onClick={e=>this.alertClicked(email,e)}>
+
+      {/* <div className="col-4">{label_one}{label_two}</div> */}
+      <div classNamess="col-8">Subject: {email.subject}</div>
+
+      <span className="ml-auto p-2">
+        <span className="badge badge-default badge-pill">{email.date}</span>
+      </span>
+    </li >
+      )}
+</div>
+        
   ))}
   </div>
         );
@@ -654,7 +737,11 @@ this.forceUpdate()
         {/*  <h5 class="mb-1">{this.state.response}</h5> */}
           <small class="text-muted">{this.selectedEmail.date}</small>
         </div>
-        <p class="mb-1">{this.selectedEmail.text} </p>
+        <p class="mb-1">From : {this.selectedEmail.from} </p>
+        <p>
+
+        </p>
+        <p class="mb-1">Text : {this.selectedEmail.text} </p>
       </a>
 
       {/* <button onClick={e=>this.backClicked(e)}>
@@ -687,7 +774,7 @@ this.forceUpdate()
       text : '' ,
       subject: '' ,
       date: '' ,
-      from: ''
+      to: ''
     }
     
     componentDidMount() {
@@ -714,7 +801,7 @@ this.forceUpdate()
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5000/api/receive/sent/emails' , requestOptions)
+      const response = await fetch('http://192.168.112.251:5000/api/receive/sent/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -724,11 +811,11 @@ this.forceUpdate()
   
       return body;
     };
-    alertClicked(text,date,e) {
+    alertClicked(email,e) {
       e.preventDefault();
-      this.selectedEmail.date=date
-      this.selectedEmail.text=text
-
+      this.selectedEmail.date=email.date
+      this.selectedEmail.text=email.text
+    this.selectedEmail.to=email.from
      this.myBoolean=true ;
      this.forceUpdate();
   
@@ -768,13 +855,13 @@ this.forceUpdate()
           <div>
       {this.state.emails.map(email => (
           <div class="list-group" > 
-          <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email.text,email.date,e)} >
+          <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email,e)} >
             <div class="d-flex w-100 justify-content-between">
             <div className="checkbox">
         <input type="checkbox" />
       </div>
 
-        &nbsp;&nbsp;<span className="fa fa-star-o"></span>&nbsp;&nbsp;
+       <span className="fa fa-star-o"></span>
               <h5 class="mb-1">{email.subject}</h5>
               <small class="text-muted">{email.date}</small>
             </div>
@@ -798,7 +885,12 @@ this.forceUpdate()
         {/*  <h5 class="mb-1">{this.state.response}</h5> */}
           <small class="text-muted">{this.selectedEmail.date}</small>
         </div>
-        <p class="mb-1">{this.selectedEmail.text} </p>
+        <p class="mb-1">To : {this.selectedEmail.to} </p>
+        <p>   
+
+
+        </p>
+        <p class="mb-1">Text : {this.selectedEmail.text} </p>
       </a>
          
         <p></p>  <p></p> 
@@ -853,29 +945,7 @@ this.forceUpdate()
       }
   
 
-class showText extends React.Component {
-  hi = (text) => {
-    console.log('omd inja')
-     this.Finaltext = text;
-    // this.forceUpdate();
-  }
-  render() {
-    console.log('hatta inja')
-  return (
-    <div class="list-group" > 
-       
-    <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start"  >
-      <div class="d-flex w-100 justify-content-between">
-      {/*  <h5 class="mb-1">{this.state.response}</h5> */}
-        <small class="text-muted">salam</small>
-      </div>
-      <p class="mb-1">khodafez </p>
-      <small class="text-muted">this worked</small>
-    </a>
-    </div>
-    );
-  }
-}
+
   /**
    * Main class which contains the labels and the email list.
    */
@@ -919,14 +989,15 @@ this.forceUpdate()
            {/* onClick={this.handleUpdateMe.bind(this) }*/}
           <ActionsRow  updateScreen={e=>this.update(e)}/>
           <hr />
-          <div className="row">
+          {/* <div className="row">
             <div className="col-12 col-sm-12 col-md-3 col-lg-2">
              
             </div> 
             <div className="col-12 col-sm-12 col-md-9 col-lg-10">
               {content}        
             </div>
-          </div>
+          </div> */}
+          <LabelItem />
         </div>
       )
     }
@@ -1014,7 +1085,7 @@ this.forceUpdate()
       e.preventDefault();
       console.log("okkkkk")
       console.log(state);
-      fetch('http://localhost:5000/api/send/email', {
+      fetch('http://192.168.112.251:5000/api/send/email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1029,6 +1100,7 @@ this.forceUpdate()
             console.log('now:')
             console.log(state)
             this.state.success=true
+            alert('successfully sent :)')
             this.forceUpdate()
           });
           
@@ -1045,7 +1117,7 @@ this.forceUpdate()
       return (
         
         <div>
-        
+        <React.Fragment>
         <p>
           <h>To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h>
           <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setTos(this.state, e)} />
@@ -1062,7 +1134,7 @@ this.forceUpdate()
         <button type="submit" className="btn btn-primary btn-block" style={{ height: 50, width: 70 }}
           onClick={e => this.sendEmail(this.state, e)}>Send</button>
           
-        
+          </React.Fragment>
       </div>
       
       
@@ -1070,6 +1142,8 @@ this.forceUpdate()
     }else{
       return(
         <div>
+          
+          <ActionsRow />
    {e=> this.props.update(e)}
     </div>
       )
