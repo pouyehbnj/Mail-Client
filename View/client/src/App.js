@@ -7,9 +7,10 @@ import {BootstrapTable, TableHeaderColumn}
 
 import axios from 'axios';
 //import { response } from 'express';
-
+import Frame from 'react-frame-component';
 import SunEditor, { buttonList } from "suneditor-react";
 import 'suneditor/dist/css/suneditor.min.css';
+import { View, Button } from 'react-native';
 
 
 var loginInfo = {
@@ -43,7 +44,7 @@ class App extends React.Component {
         body: JSON.stringify({ "email": loginInfo.email, "password": loginInfo.password })
     };
        console.log('hiii-zahraaaaaaaaaaaaaaa')
-       const response = await fetch('http://localhost:5001/api/login' , { method: 'POST',
+       const response = await fetch('http://localhost:5000/api/login' , { method: 'POST',
        headers: {
          'Content-Type': 'application/json',
        },
@@ -173,11 +174,12 @@ class Login extends React.Component{
       const requestOptions = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' ,
-          'Authorization': 'Bearer ${loginInfo.token}' },
+          'Authorization': 'BearereyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
+        },
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5001/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://localhost:5000/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -255,11 +257,12 @@ class Login extends React.Component{
       const requestOptions = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' ,
-          'Authorization': 'Bearer ${loginInfo.token}' },
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
+        },
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5001/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://localhost:5000/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -480,6 +483,7 @@ this.forceUpdate()
         id: '' ,
         status: ''
       }
+      deleted = false
     
     componentDidMount() {
     
@@ -497,11 +501,12 @@ this.forceUpdate()
       const requestOptions = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' ,
-          'Authorization': 'Bearer ${loginInfo.token}' },
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
+        },
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5001/api/receive/emails' , requestOptions)
+      const response = await fetch('http://localhost:5000/api/receive/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -550,10 +555,11 @@ this.forceUpdate()
           body: JSON.stringify({ title: 'React POST Request Example' })
       };
         console.log('hiii-zahra')
-        const response = await fetch('http://localhost:5001/api/mark/seen' , {
+        const response = await fetch('http://localhost:5000/api/mark/seen' , {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' ,
-            'Authorization': 'Bearer ${loginInfo.token}' },
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
+          },
           body: JSON.stringify({ "uid": this.selectedEmail.id })
       })
       //  .then(response => response.json())
@@ -576,10 +582,39 @@ this.forceUpdate()
   
   
       }
+      delete(e,id){
+        console.log("id:"+id)
+        e.preventDefault();
+        fetch('http://localhost:5000/api/delete/emails', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
+          },
+          body: JSON.stringify({uid:id})
+        }).then(response => {
+          if (response.ok) {
+            response.json().then(async json => {
+              
+              console.log('now:')
+              console.log(json);
+              this.deleted=true
+              await this.callApi() 
+              .then(res => { this.setState({emails:res.emails}) 
+              console.log( 'hiii'+this.state.emails[0].subject)
+            })
+            .catch(err => console.log(err))
+            this.forceUpdate()
+              
+              
+            });
+          }
+        })
+      }
     
     render(){
       console.log('hii'+this.myBoolean)
-      if(!this.myBoolean){
+      if(!this.myBoolean || this.deleted){
         return (
           <div>
       {this.state.emails.map(email => (
@@ -609,7 +644,7 @@ this.forceUpdate()
   </div>
         );
     }
-    else{
+    else if(this.myBoolean || !this.delete){
       return(
        
       <div class="list-group" > 
@@ -626,10 +661,11 @@ this.forceUpdate()
          Back
     </button> */}
     <p></p>  <p></p> 
-    {/* <div class="btn-group"> */}
-    <h><button  type="submit" className="btn-primary btn-block"  onClick={e=>this.backClicked(e)}>
-      Back</button></h>
-         <h> <button type="submit" className="btn btn-danger more">Delete</button></h>
+     {/* <div class="btn-group">  */}
+    <button  type="submit" className="btn-primary btn-block"  onClick={e=>this.backClicked(e)} style = {{ height: 40, width: 70}}>
+      Back</button>
+          <button type="submit" className="btn btn-danger more" onClick={e=>this.delete(e,this.selectedEmail.id)} style = {{ height: 40, width:70 }}>
+           Delete</button> 
      {/* style={{ backgroundColor:"#b80000", height: 40, width: 70 }}</div> */}
       </div>
       );
@@ -673,11 +709,12 @@ this.forceUpdate()
       const requestOptions = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' ,
-          'Authorization': 'Bearer ${loginInfo.token}' },
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
+        },
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://localhost:5001/api/receive/sent/emails' , requestOptions)
+      const response = await fetch('http://localhost:5000/api/receive/sent/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -696,27 +733,28 @@ this.forceUpdate()
      this.forceUpdate();
   
     }
-    delete(e,id){
-      e.preventDefault();
-      fetch('http://localhost:5000/api/delete/emails', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
-        },
-        body: JSON.stringify({uid:id})
-      }).then(response => {
-        if (response.ok) {
-          response.json().then(json => {
+    // delete(e,id){
+    //   e.preventDefault();
+    //   fetch('http://localhost:5000/api/delete/emails', {
+    //     method: 'DELETE',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
+    //     },
+    //     body: JSON.stringify({uid:id})
+    //   }).then(response => {
+    //     if (response.ok) {
+    //       response.json().then(json => {
             
-            console.log('now:')
-            console.log(json);
-            this.deleted=true
-            this.forceUpdate()
-          });
-        }
-      })
-    }
+    //         console.log('now:')
+    //         console.log(json);
+    //         this.deleted=true
+    //         this.forceUpdate()
+    //         this.callApi()
+    //       });
+    //     }
+    //   })
+    // }
    backClicked(e){
     e.preventDefault();
 
@@ -724,7 +762,7 @@ this.forceUpdate()
      this.forceUpdate();
    }
     render(){
-      if(this.deleted){
+     // if(this.deleted){
       if(!this.myBoolean){
         return (
           <div>
@@ -749,7 +787,8 @@ this.forceUpdate()
   </div>
         );
     }
-    else{
+    else if(this.myBoolean ){
+      
       return(
        
       <div class="list-group" > 
@@ -766,37 +805,38 @@ this.forceUpdate()
       
       <h><button  type="submit" className="btn-primary btn-block" style = {{ height: 40, width: 70}}
           onClick={e=>this.backClicked(e)}>Back</button></h>
-          <h><button type="submit" className="btn btn-danger more"
-          onClick={e=>this.delete(e,this.selectedEmail.uid)}>Delete</button></h>
+          {/* <h><button type="submit" className="btn btn-danger more"
+          onClick={e=>this.delete(e,this.selectedEmail.uid)}>Delete</button></h> */}
           {/* style={{ backgroundColor:"#b80000" , height: 40, width: 70}} underlayColor="#b80000" */}
             
       </div>
       );
-    }
-  }else{
-    return(
-       
-      <div class="list-group" > 
-       
-      <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start"  >
-        <div class="d-flex w-100 justify-content-between">
-        {/*  <h5 class="mb-1">{this.state.response}</h5> */}
-          <small class="text-muted">{this.selectedEmail.date}</small>
-        </div>
-        <p class="mb-1">{this.selectedEmail.text} </p>
-      </a>
-         
-        <p></p>  <p></p> 
       
-      <h><button  type="submit" className="btn-primary btn-block" style = {{ height: 40, width: 70}}
-          onClick={e=>this.backClicked(e)}>Back</button></h>
-          <h><button type="submit" className="btn btn-danger more"
-          onClick={e=>this.delete(e,this.selectedEmail.uid)}>Delete</button></h>
-          {/* style={{ backgroundColor:"#b80000" , height: 40, width: 70}} underlayColor="#b80000" */}
+    }
+  // }else{
+  //   return(
+       
+  //     <div class="list-group" > 
+       
+  //     <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start"  >
+  //       <div class="d-flex w-100 justify-content-between">
+  //       {/*  <h5 class="mb-1">{this.state.response}</h5> */}
+  //         <small class="text-muted">{this.selectedEmail.date}</small>
+  //       </div>
+  //       <p class="mb-1">{this.selectedEmail.text} </p>
+  //     </a>
+         
+  //       <p></p>  <p></p> 
+      
+  //     <h><button  type="submit" className="btn-primary btn-block" style = {{ height: 40, width: 70}}
+  //         onClick={e=>this.backClicked(e)}>Back</button></h>
+  //         <h><button type="submit" className="btn btn-danger more"
+  //         onClick={e=>this.delete(e,this.selectedEmail.uid)}>Delete</button></h>
+  //         {/* style={{ backgroundColor:"#b80000" , height: 40, width: 70}} underlayColor="#b80000" */}
             
-      </div>
-      );
-  }
+  //     </div>
+  //     );
+  // }
 
 
     }
@@ -974,11 +1014,11 @@ this.forceUpdate()
       e.preventDefault();
       console.log("okkkkk")
       console.log(state);
-      fetch('http://localhost:5001/api/send/email', {
+      fetch('http://localhost:5000/api/send/email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'authorization': 'Bearer ${loginInfo.token}'
+          'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
         },
         body: JSON.stringify(state.email)
       }).then(response => {
@@ -1003,14 +1043,16 @@ this.forceUpdate()
     render(){
       if(!this.state.success){
       return (
+        
         <div>
+        <View style={styles.container}>
         <p>
-          <h>To <span className="second-word-formatting"/></h>
+          <h>To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h>
           <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setTos(this.state, e)} />
         </p>
 
         <p>
-          <h>Subject </h>
+        <span>Subject&nbsp;&nbsp;</span>
           <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.state.email.subject = e.target.value } />
         </p>
         <p>       
@@ -1019,18 +1061,17 @@ this.forceUpdate()
         </p>
         <button type="submit" className="btn btn-primary btn-block" style={{ height: 50, width: 70 }}
           onClick={e => this.sendEmail(this.state, e)}>Send</button>
-
+          </View>
+        
       </div>
+      
+      
       )
     }else{
       return(
-<<<<<<< HEAD
-        <EmailLabels/>
-=======
         <div>
    {e=> this.props.update(e)}
     </div>
->>>>>>> e2a92c12382392a55d14cf4af7882e19278d5cf7
       )
     }
   }
