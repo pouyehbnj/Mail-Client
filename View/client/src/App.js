@@ -1115,9 +1115,8 @@ this.forceUpdate()
     render(){
       if(!this.state.success){
       return (
-        
+        <p class="compose">
         <div>
-        <React.Fragment>
         <p>
           <h>To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h>
           <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setTos(this.state, e)} />
@@ -1129,15 +1128,14 @@ this.forceUpdate()
         </p>
         <p>       
           <h> Email </h>
-          <SunEditor width="70%" height="100%" onChange={e => this.state.email.text =  e} />
+          <SunEditor width="100%" height="100%" onChange={e => this.state.email.text =  e} />
         </p>
         <button type="submit" className="btn btn-primary btn-block" style={{ height: 50, width: 70 }}
           onClick={e => this.sendEmail(this.state, e)}>Send</button>
-          
-          </React.Fragment>
+      
+ 
       </div>
-      
-      
+      </p>
       )
     }else{
       return(
