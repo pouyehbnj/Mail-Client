@@ -555,16 +555,40 @@ this.forceUpdate()
     }
    backClicked(e , id){
     e.preventDefault();
-
+    
      this.myBoolean=false ;
      if(this.selectedEmail.status=='UNSEEN'){
-     this.markUnseen();
-     this.callApi()
-    // 
-    .then(res => { this.setState({emails:res.emails}) 
-    console.log( 'hiii'+this.state.emails[0].subject)
-  })
-  .catch(err => console.log(err));
+      fetch('http://localhost:5000/api/mark/seen', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
+        },
+        body: JSON.stringify({uid:id})
+      }).then(response => {
+        if (response.ok) {
+          response.json().then(async json => {
+            console.log("ID:"+id)
+            console.log('now:')
+            console.log(json);
+            await this.callApi() 
+            .then(res => { this.setState({emails:res.emails}) 
+            console.log( 'hiii'+this.state.emails[0].subject)
+            this.forceUpdate()
+          })
+          .catch(err => console.log(err))
+          
+            
+            
+          });
+        }
+      })
+  //    this.callApi()
+  //   // 
+  //   .then(res => { this.setState({emails:res.emails}) 
+  //   console.log( 'hiii'+this.state.emails[0].subject)
+  // })
+  // .catch(err => console.log(err));
 
      }
      this.props.update();
@@ -738,7 +762,7 @@ this.forceUpdate()
     </button> */}
     <p></p>  <p></p> 
      {/* <div class="btn-group">  */}
-    <button  type="submit" className="btn-primary btn-block"  onClick={e=>this.backClicked(e)} style = {{ height: 40, width: 70}}>
+    <button  type="submit" className="btn-primary btn-block"  onClick={e=>this.backClicked(e,this.selectedEmail.id)} style = {{ height: 40, width: 70}}>
       Back</button>
           <button type="submit" className="btn btn-danger more" onClick={e=>this.delete(e,this.selectedEmail.id)} style = {{ height: 40, width:70 }}>
            Delete</button> 
