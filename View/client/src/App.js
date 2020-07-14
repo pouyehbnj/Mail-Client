@@ -130,28 +130,17 @@ class Login extends React.Component{
       //For the purpose of this exampel, the NavBar has no interation and is just JSX.
       return (
         <nav className="navbar navbar-toggleable-md navbar-inverse bg-inverse">
-          <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-          </button>
-          {/* <img className="nav-logo" src="/haghighat.svg" width="36" height="36" /> */}
-          <a className="navbar-brand" href="#">{this.props.title}</a>
-  
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          
+        <img className="nav-logo" src="https://image.flaticon.com/icons/svg/262/262544.svg" width="36" height="36" />
+        <dev className="navbar-brand">Our Awesome Email Manager</dev>
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+
           <ul className="navbar-nav ml-auto">
-            
             <li className="nav-item active">
-            <a className="nav-link" href="#">&nbsp;<i className="fa fa-calendar" aria-hidden="true"></i>&nbsp;</a>
+              <a className="nav-link" >{this.props.user} <span className="sr-only">(current)</span></a>
             </li>
-            <li className="nav-item active">
-            <a className="nav-link" href="#">&nbsp;<i className="fa fa-th" aria-hidden="true"></i>&nbsp;</a>
-            </li>
-           <li className="nav-item active"> 
-            <a className="nav-link" href="#">{loginInfo.user} <span className="sr-only">(current)</span><i className="fa fa-angle-down" aria-hidden="true"></i></a>
-      </li> 
           </ul>
-          </div>
-        </nav>
+        </div>
+      </nav>
       ) 
     }
   }
@@ -625,7 +614,7 @@ this.forceUpdate()
       delete(e,id){
         console.log("id:"+id)
         e.preventDefault();
-        fetch('http://localhost:5000/api/delete/emails', {
+        fetch('http://192.168.112.251:5000/api/delete/emails', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -711,7 +700,7 @@ this.forceUpdate()
           
           
       //   </div>
-      <li className="list-group-item d-flex  list-group-item-info" onClick={e=>this.alertClicked(email,e)}>
+      <li className="list-group-item d-flex  list-group-item-dark" onClick={e=>this.alertClicked(email,e)}>
 
       {/* <div className="col-4">{label_one}{label_two}</div> */}
       <div classNamess="col-8">Subject: {email.subject}</div>
@@ -854,22 +843,18 @@ this.forceUpdate()
         return (
           <div>
       {this.state.emails.map(email => (
-          <div class="list-group" > 
-          <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email,e)} >
-            <div class="d-flex w-100 justify-content-between">
-            <div className="checkbox">
-        <input type="checkbox" />
-      </div>
+        <div>
+           <li className="list-group-item d-flex" onClick={e=>this.alertClicked(email,e)}>
 
-       <span className="fa fa-star-o"></span>
-              <h5 class="mb-1">{email.subject}</h5>
-              <small class="text-muted">{email.date}</small>
-            </div>
-            <p class="mb-1">{email.text} </p>
-          </a>
-          
-          
-        </div>
+           {/* <div className="col-4">{label_one}{label_two}</div> */}
+           <div classNamess="col-8">Subject: {email.subject}</div>
+       
+           <span className="ml-auto p-2">
+             <span className="badge badge-default badge-pill">{email.date}</span>
+           </span>
+           </li>
+           </div>
+           
   ))}
   </div>
         );
