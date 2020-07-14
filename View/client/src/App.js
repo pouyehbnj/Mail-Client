@@ -10,7 +10,7 @@ import axios from 'axios';
 import Frame from 'react-frame-component';
 import SunEditor, { buttonList } from "suneditor-react";
 import 'suneditor/dist/css/suneditor.min.css';
-import { View, Button } from 'react-native';
+
 
 
 var loginInfo = {
@@ -1045,7 +1045,7 @@ this.forceUpdate()
       return (
         
         <div>
-        <View style={styles.container}>
+        
         <p>
           <h>To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h>
           <input type="text" style={{ width: "380px", fontSize: 15 }} onChange={e => this.setTos(this.state, e)} />
@@ -1061,7 +1061,7 @@ this.forceUpdate()
         </p>
         <button type="submit" className="btn btn-primary btn-block" style={{ height: 50, width: 70 }}
           onClick={e => this.sendEmail(this.state, e)}>Send</button>
-          </View>
+          
         
       </div>
       
