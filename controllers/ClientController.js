@@ -26,6 +26,11 @@ module.exports = new class ClientController {
     async fetchMails(box, connection, filter, emails = []) {
         return new promise(async (res, rej) => {
             var email = {}
+            var booleanStatus
+            if(filter == 'SEEN')
+                booleanStatus = true
+            else 
+                booleanStatus = false
             await connection.openBox(box).then(function () {
                 var searchCriteria = [
                     filter
@@ -46,6 +51,7 @@ module.exports = new class ClientController {
                         email["from"] = result.parts[1].body.from[0]
                         email["status"] = filter
                         email["uid"]=result.attributes.uid
+                        email["booleanStatus"] = booleanStatus
                         var text = htmlToText.fromString(result.parts[0].body, {
                             wordwrap: 130
                         });
