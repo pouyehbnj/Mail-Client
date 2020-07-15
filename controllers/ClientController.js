@@ -116,12 +116,12 @@ module.exports = new class ClientController {
                 }
 
             })
-            // .catch(err =>{
-            //     return res.status(400).json({
-            //         success: false,
-            //         message: "wrong credentials"
-            //     })
-            // })
+            .catch(err =>{
+                return res.status(400).json({
+                    success: false,
+                    message: "wrong credentials"
+                })
+            })
 
             // }
         })
@@ -231,7 +231,8 @@ module.exports = new class ClientController {
                 if (user.host.includes("gmail"))
                     hostMail = 'Gmail'
                 else hostMail = 'Yahoo'
-                await that.fetchMails('[' + hostMail + ']/Sent Mail', connection, 'ALL', []).then(emails => {
+                await that.fetchMails('[' + hostMail + ']/Sent Mail', connection, 'ALL', []).then(async emails => {
+                    await emails.sort((a, b) => new Date(b.date) - new Date(a.date));
                     console.log(emails)
                     connection.end()
                     return res.status(200).json({
