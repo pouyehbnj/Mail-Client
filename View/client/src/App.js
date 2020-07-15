@@ -45,6 +45,8 @@ else{
   loginInfo.email=""
   loginInfo.password=""
            this.forceUpdate()
+           window.location.reload(false);
+
 }
       
 
@@ -1124,14 +1126,17 @@ else{
        console.log("hereeeee pouyeh")
      }
      handleLogOutclicked(e){
-      e.preventDefault()
-      this.clickedLogOut = true ;
-      this.props.updateScreen(e , this.lickedLogout)
+     // e.preventDefault()
+      console.log('logggg out')
+      window.location.reload(false);
+
+    //  this.props.updateScreen(e , this.lickedLogout)
       
 
      }
     render(){
       console.log('bbinm chie'+ this.clicked) 
+      
       if(!this.clicked){
       return (
         
