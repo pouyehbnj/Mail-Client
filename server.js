@@ -1,4 +1,4 @@
-
+//main server
 global.config = require("./config");
 const express = require('express');
 const bodyParser = require('body-parser');

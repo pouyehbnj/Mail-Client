@@ -1,10 +1,11 @@
+//controller class
 var imaps = require('imap-simple');
 var jwt = require('jsonwebtoken');
 var CircularJSON = require('circular-json');
 var promise = require('promise');
 var htmlToText = require('html-to-text');
 var nodemailer = require('nodemailer');
-//var config = require("./config");
+
 module.exports = new class ClientController {
     constructor() {
         this.models = {
@@ -43,7 +44,7 @@ module.exports = new class ClientController {
                 };
 
                 connection.search(searchCriteria, fetchOptions).then(async function (results) {
-                   // console.log(results[0])
+                  
                     await results.forEach(result => {
                         
                         email = {}
@@ -64,14 +65,14 @@ module.exports = new class ClientController {
                        
 
                     })
-                    //console.log(emails)
+                  
                     res(emails)
 
                 })
 
 
 
-                //  })
+    
 
             })
             
@@ -100,7 +101,7 @@ module.exports = new class ClientController {
         const redisDatabase = require(`${config.path.database}/redis`);
         const redisDatabaseObj = new redisDatabase();
         redisDatabaseObj.cacheDataExpire(token.toString(), configConn.imap).then(result => {
-            // if(result){
+            
             console.log("savedddddddd")
             imaps.connect(configConn).then(function (connection) {
                 if (connection) {
@@ -124,7 +125,7 @@ module.exports = new class ClientController {
                 })
             })
 
-            // }
+            
         })
 
 
@@ -196,7 +197,6 @@ module.exports = new class ClientController {
                 from: user.user,
                 to: req.body.to,
                 subject: req.body.subject,
-               // text: req.body.text,
                 html:req.body.text
             }
             console.log(mailOptions)

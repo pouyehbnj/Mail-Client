@@ -1,3 +1,4 @@
+//databse class
 var redis = require("redis");
 var client = redis.createClient(config.redis.port, config.redis.host);
 var Promise = require('promise');
