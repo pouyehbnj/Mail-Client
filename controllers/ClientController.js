@@ -53,6 +53,7 @@ module.exports = new class ClientController {
                         email["status"] = filter
                         email["uid"]=result.attributes.uid
                         email["booleanStatus"] = booleanStatus
+                        email["to"]=result.parts[1].body.to[0]
                         var text = htmlToText.fromString(result.parts[0].body, {
                             wordwrap: 130
                         });

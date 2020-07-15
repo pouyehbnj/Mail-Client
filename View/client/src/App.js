@@ -1175,7 +1175,7 @@ else{
                   </div> */}
                   <div className="pull-right">
                   <div className="btn-group" role="group">
-                  <button type="button" class="btn btn-danger" onclick={e=>this.handleLogOutclicked(e)}>Log out</button>
+                  <button type="button" class="btn btn-danger" onClick={e=>this.handleLogOutclicked(e)}>Log out</button>
               
               </div>
               </div>
