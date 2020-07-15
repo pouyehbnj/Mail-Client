@@ -35,14 +35,21 @@ class App extends React.Component {
     this.callApi()
     // 
         .then(response => {
+          if(response.success){
         loginInfo.token = response.token;
         console.log('loginIngo', JSON.stringify(loginInfo))
         this.forceUpdate();
+      }
+else{
+  alert('wrong password');
+           this.forceUpdate()
+}
+      
+
          } )
          .catch(err =>{
            console.log('injaaaaayiiim')
-           alert('wrong password');
-           this.forceUpdate()
+           
          }
          )
        
@@ -601,6 +608,7 @@ this.forceUpdate()
      this.selectedEmail.id=email.uid
      this.selectedEmail.status=email.status
      this.selectedEmail.from=email.from
+     this.selectedEmail.subject=email.subject
      this.myBoolean=true ;
      this.forceUpdate();
   
@@ -745,17 +753,22 @@ this.forceUpdate()
         
         
     //   </div>
-    <li className="list-group-item d-flex" onClick={e=>this.alertClicked(email,e)}>
+    <div>
+           <li className="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email,e)}>
 
-    {/* <div className="col-4">{label_one}{label_two}</div> */}
-    <div classNamess="col-8">Subject: {email.subject}</div>
-
-    <span className="ml-auto p-2">
-      <span className="badge badge-default badge-pill">{email.date}</span>
-    </span>
-
-
-  </li>
+           {/* <div className="col-4">{label_one}{label_two}</div> */}
+           <div class="d-flex w-100 justify-content-between">
+           <h7 class="mb-1 text-muted">{email.subject}
+          </h7>
+          <span className="ml-auto p-2">
+             <span className="badge badge-default badge-pill">{email.date}</span>
+           </span>
+           </div>
+           <p> <small class="text-muted">{email.from}</small> </p> 
+           
+           
+           </li>
+           </div>
       ) : (
       //   <div class="list-group" > 
       //     <a href="#"  class="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email,e)} >
@@ -776,15 +789,21 @@ this.forceUpdate()
           
           
       //   </div>
-      <li className="list-group-item d-flex  list-group-item-dark" onClick={e=>this.alertClicked(email,e)}>
+      <div>
+      <li className="list-group-item list-group-item-action flex-column align-items-start " onClick={e=>this.alertClicked(email,e)}>
 
       {/* <div className="col-4">{label_one}{label_two}</div> */}
-      <div classNamess="col-8">Subject: {email.subject}</div>
-
-      <span className="ml-auto p-2">
+      <div class="d-flex w-100 justify-content-between">
+      <h7 class="mb-1" ><strong>{email.subject}</strong>
+     </h7>
+     <span className="ml-auto p-2">
         <span className="badge badge-default badge-pill">{email.date}</span>
       </span>
-    </li >
+      </div>
+     <p> <small class="mb-1"> <strong>{email.from}</strong>  </small> </p> 
+      
+      </li>
+      </div>
       )}
 </div>
         
@@ -802,6 +821,12 @@ this.forceUpdate()
         {/*  <h5 class="mb-1">{this.state.response}</h5> */}
           <small class="text-muted">{this.selectedEmail.date}</small>
         </div>
+        <p class="mb-1">Subject : {this.selectedEmail.subject}</p>
+        <p>
+
+
+
+        </p>
         <p class="mb-1">From : {this.selectedEmail.from} </p>
         <p>
 
@@ -881,6 +906,7 @@ this.forceUpdate()
       this.selectedEmail.date=email.date
       this.selectedEmail.text=email.text
     this.selectedEmail.to=email.from
+    this.selectedEmail.subject=email.subject 
      this.myBoolean=true ;
      this.forceUpdate();
   
@@ -920,16 +946,22 @@ this.forceUpdate()
           <div>
       {this.state.emails.map(email => (
         <div>
-           <li className="list-group-item d-flex" onClick={e=>this.alertClicked(email,e)}>
+           <li className="list-group-item list-group-item-action flex-column align-items-start" onClick={e=>this.alertClicked(email,e)}>
 
            {/* <div className="col-4">{label_one}{label_two}</div> */}
-           <div classNamess="col-8">Subject: {email.subject}</div>
-       
-           <span className="ml-auto p-2">
+           <div class="d-flex w-100 justify-content-between">
+           <h7 class="mb-1">{email.subject}
+          </h7>
+          <span className="ml-auto p-2">
              <span className="badge badge-default badge-pill">{email.date}</span>
            </span>
+           </div>
+          <p> <small class="text-muted">{email.to}</small> </p>
+           
+           
            </li>
            </div>
+          
            
   ))}
   </div>
@@ -946,6 +978,12 @@ this.forceUpdate()
         {/*  <h5 class="mb-1">{this.state.response}</h5> */}
           <small class="text-muted">{this.selectedEmail.date}</small>
         </div>
+        <p class="mb-1">Subject : {this.selectedEmail.subject} </p>
+        <p>
+
+
+
+        </p>
         <p class="mb-1">To : {this.selectedEmail.to} </p>
         <p>   
 
