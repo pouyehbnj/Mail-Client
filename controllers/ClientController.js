@@ -11,7 +11,7 @@ module.exports = new class ClientController {
 
         }
     }
-
+// this method check user credentials
     async getUserByToken(token) {
         return new promise((res, rej) => {
             const redisDatabase = require(`${config.path.database}/redis`);
@@ -23,6 +23,7 @@ module.exports = new class ClientController {
         })
 
     }
+    // this method fetches mails given the inbox,user connection and filters
     async fetchMails(box, connection, filter, emails = []) {
         return new promise(async (res, rej) => {
             var email = {}
@@ -75,7 +76,7 @@ module.exports = new class ClientController {
             
         })
     }
-
+//this is login method for user authentication
     async login(req, res) {
         console.log("req.bodyyyyyy:")
         console.log(req.body)
@@ -127,7 +128,7 @@ module.exports = new class ClientController {
 
 
     }
-
+//this method recieves inbox emails
     async receiveEmails(req, res) {
 
         var that = this
@@ -165,7 +166,7 @@ module.exports = new class ClientController {
 
 
     }
-
+//this method send emails with specified subject,to,text
     async sendEmail(req, res) {
         const bearerHeader = req.headers['authorization']
         if (typeof bearerHeader !== 'undefined') {
@@ -213,7 +214,7 @@ module.exports = new class ClientController {
 
         })
     }
-
+//this method fetches sent inbox
     async receiveSentEmails(req, res) {
         var that = this
         
@@ -241,7 +242,7 @@ module.exports = new class ClientController {
             })
         })
     }
-
+//this method deleted a specified email with id
     async deleteEmails(req,res) {
         var that = this
         const bearerHeader = req.headers['authorization']
@@ -268,7 +269,7 @@ module.exports = new class ClientController {
 
     }
 
-
+//this method marks emails that are seen, as seen
     async markSeen(req,res) {
         var that = this
         const bearerHeader = req.headers['authorization']
@@ -294,38 +295,7 @@ module.exports = new class ClientController {
         })
 
     }
-
-    async receiveDeletedEmails(req, res) {
-        var that = this
-        const bearerHeader = req.headers['authorization']
-        if (typeof bearerHeader !== 'undefined') {
-            var bearer = bearerHeader.split(' ')
-            var bearerToken = bearer[1]
-            req.token = bearerToken
-        }
-
-        this.getUserByToken(req.token).then(user => {
-        imaps.connect({ imap: user }).then(async function (connection) {
-            connection.openBox('INBOX').then(function () {
-               
-                    var searchCriteria = [
-                        'Deleted'
-                    ];
-
-                    var fetchOptions = {
-                        bodies: ['HEADER', 'TEXT'],
-                        markSeen: false
-                    };
-
-                    connection.search(searchCriteria, fetchOptions).then(async function (results) {
-                        console.log(results)
-                    })
-                
-            })
-        })
-    })
-
-    }
+//this method returns number of sent and inbox emails for updates
     async getNumberOfEmails(req,res){
         var that = this
         var hostMail 

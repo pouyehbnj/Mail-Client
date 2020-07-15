@@ -7,7 +7,6 @@ router.post('/login', ClientController.login.bind(ClientController))
 
 router.get('/receive/emails',ClientController.receiveEmails.bind(ClientController))
 router.get('/receive/sent/emails',ClientController.receiveSentEmails.bind(ClientController))
-router.get('/receive/deleted/emails',ClientController.receiveDeletedEmails.bind(ClientController))
 router.get('/receive/numberOf/emails',ClientController.getNumberOfEmails.bind(ClientController))
 
 router.delete('/delete/emails',ClientController.deleteEmails.bind(ClientController))
