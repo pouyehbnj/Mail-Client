@@ -9,7 +9,8 @@ import axios from 'axios';
 //import { response } from 'express';
 import Frame from 'react-frame-component';
 import SunEditor, { buttonList } from "suneditor-react";
-import 'suneditor/dist/css/suneditor.min.css';
+import 'suneditor/dist/css/suneditor.min.css' ;
+//import Navbar from 'react-bootstrap/Navbar'
 
 
 
@@ -26,6 +27,10 @@ class App extends React.Component {
   handleUpdateMe() {
     this.props.onClick();
   }
+  logout(e){
+    loginInfo.token=""
+    this.forceUpdate()
+  }
   login(){
     this.callApi()
     // 
@@ -34,6 +39,12 @@ class App extends React.Component {
         console.log('loginIngo', JSON.stringify(loginInfo))
         this.forceUpdate();
          } )
+         .catch(err =>{
+           console.log('injaaaaayiiim')
+           alert('wrong password');
+           this.forceUpdate()
+         }
+         )
        
       
   }
@@ -44,7 +55,7 @@ class App extends React.Component {
         body: JSON.stringify({ "email": loginInfo.email, "password": loginInfo.password })
     };
        console.log('hiii-zahraaaaaaaaaaaaaaa')
-       const response = await fetch('http://192.168.112.251:5000/api/login' , { method: 'POST',
+       const response = await fetch('http://192.168.112.251:5001/api/login' , { method: 'POST',
        headers: {
          'Content-Type': 'application/json',
        },
@@ -67,7 +78,7 @@ class App extends React.Component {
       return (
         <div>
           <NavBar title="Email Manager" user={loginInfo.email} />
-          <MainContainer onClick={this.updateMe.bind(this)} />
+          <MainContainer logout={e=>this.logout(e)} />
         </div>
       )
     } else {
@@ -100,7 +111,7 @@ class Login extends React.Component{
     return (
 
       <form>
-        <h3>Étoile Email Manager</h3>
+        <h3>Awesome Email Manager</h3>
         <div className="form-group">
           <label>Email address</label>
           {/* <input type="email" className="form-control col-xs-4" placeholder="Enter email"
@@ -113,7 +124,7 @@ class Login extends React.Component{
           {/* <input type="password" className="form-control" placeholder="Enter password"
             onChange={e => this.setState({ password: e.target.value })} /> */}
 
-          <input type="text" className="form-control" placeholder="Enter password"
+          <input type="password" className="form-control" placeholder="Enter password"
             onChange={e => loginInfo.password = e.target.value} />
         </div>
         <button type="button" className="btn btn-info btn-block more" onClick={this.handleSubmitClick.bind(this)}>Submit</button>
@@ -129,18 +140,39 @@ class Login extends React.Component{
     render() {
       //For the purpose of this exampel, the NavBar has no interation and is just JSX.
       return (
-        <nav className="navbar navbar-toggleable-md navbar-inverse bg-inverse">
-        <img className="nav-logo" src="https://image.flaticon.com/icons/svg/262/262544.svg" width="36" height="36" />
-        <dev className="navbar-brand">Our Awesome Email Manager</dev>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+      //   <nav className="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+      //   <img className="nav-logo" src="https://image.flaticon.com/icons/svg/262/262544.svg" width="36" height="36" />
+      //   <dev className="navbar-brand">Our Awesome Email Manager</dev>
+      //   <div className="collapse navbar-collapse" id="navbarSupportedContent">
 
-          <ul className="navbar-nav ml-auto">
-            <li className="nav-item active">
-              <a className="nav-link" >{this.props.user} <span className="sr-only">(current)</span></a>
-            </li>
-          </ul>
+      //     <ul className="navbar-nav ml-auto">
+      //       <li className="nav-item active">
+      //         <a className="nav-link" >{this.props.user} <span className="sr-only">(current)</span></a>
+      //       </li>
+      //     </ul>
+      //   </div>
+      // </nav>
+    
+      <div class="pos-f-t">
+      <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-dark p-4">
+          <h4 class="text-white">Collapsed content</h4>
+          <span class="text-muted">Toggleable via the navbar brand.</span>
         </div>
+      </div>
+      <nav class="navbar navbar-dark bg-dark">
+        
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <nav class="navbar navbar-dark indigo">
+  <span class="navbar-text white-text">
+   { loginInfo.email}
+  </span>
+</nav>
       </nav>
+    </div>
+  
       ) 
     }
   }
@@ -168,7 +200,7 @@ class Login extends React.Component{
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.251:5000/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://192.168.112.251:5001/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -251,7 +283,7 @@ class Login extends React.Component{
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.251:5000/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://192.168.112.251:5001/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -267,6 +299,11 @@ class Login extends React.Component{
     }
     inboxClicked(e){
       e.preventDefault()
+      this.callApi()
+    // 
+        .then(res => this.setState({  numberOfUnAll: res.inbox , numberOfSent: res.sent}))
+        .catch(err => console.log(err));
+     //   console.log('hereeeee'+this.state.numberOfUnSeen)
      // alert('hi')
      this.state.clickedInbox=true 
      this.forceUpdate()
@@ -275,6 +312,11 @@ class Login extends React.Component{
     }
     sentClicked(e){
       e.preventDefault()
+      this.callApi()
+    // 
+        .then(res => this.setState({  numberOfUnAll: res.inbox , numberOfSent: res.sent}))
+        .catch(err => console.log(err));
+     //   console.log('hereeeee'+this.state.numberOfUnSeen)
       // alert('hi')
       this.state.clickedSent=true 
       this.forceUpdate()
@@ -316,6 +358,11 @@ else if(this.state.clickedInbox){
 
   {
     console.log('222222')
+    this.callApi()
+    // 
+        .then(res => this.setState({  numberOfUnAll: res.inbox , numberOfSent: res.sent}))
+        .catch(err => console.log(err));
+     //   console.log('hereeeee'+this.state.numberOfUnSeen)
     return (
 
       <div>
@@ -325,14 +372,14 @@ else if(this.state.clickedInbox){
           <div className="col-12 col-sm-12 col-md-3 col-lg-2">
             
           <div>
-          <button type="button" class="btn btn-primary" onClick={e=>this.inboxClicked(e)}>
+          <button type="button" class="btn btn-mdb-color form-check-label" onClick={e=>this.inboxClicked(e)}>
   Inbox <span class="badge badge-danger ml-3"> {this.state.numberOfUnAll}</span>
 </button>
 <p>
 
   
 </p>
-<button type="button" class="btn btn-primary" onClick={e=>this.sentClicked(e)}> 
+<button type="button" class="btn btn-mdb-color form-check-label" onClick={e=>this.sentClicked(e)}> 
   Sent  <span class="badge badge-danger ml-3"> {this.state.numberOfSent} </span>
 </button>
 </div>
@@ -351,8 +398,13 @@ else if(this.state.clickedInbox){
 }
 }
 else if(this.state.clickedSent){
-  
+  this.callApi()
+    // 
+        .then(res => this.setState({  numberOfUnAll: res.inbox , numberOfSent: res.sent}))
+        .catch(err => console.log(err));
+     //   console.log('hereeeee'+this.state.numberOfUnSeen)
   {
+    
     console.log('33333')
     return (
       <div>
@@ -362,14 +414,14 @@ else if(this.state.clickedSent){
           <div className="col-12 col-sm-12 col-md-3 col-lg-2">
             
           <div>
-          <button type="button" class="btn btn-primary" onClick={e=>this.inboxClicked(e)}>
+          <button type="button" class="btn btn-mdb-color form-check-label" onClick={e=>this.inboxClicked(e)}>
   Inbox <span class="badge badge-danger ml-3"> {this.state.numberOfUnAll}</span>
 </button>
 <p>
 
 
 </p>
-<button type="button" class="btn btn-primary" onClick={e=>this.sentClicked(e)}> 
+<button type="button" class="btn btn-mdb-color form-check-label" onClick={e=>this.sentClicked(e)}> 
   Sent <span class="badge badge-danger ml-3"> {this.state.numberOfSent}</span>
 </button>
 </div>
@@ -527,7 +579,7 @@ this.forceUpdate()
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.251:5000/api/receive/emails' , requestOptions)
+      const response = await fetch('http://192.168.112.251:5001/api/receive/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -558,7 +610,7 @@ this.forceUpdate()
     
      this.myBoolean=false ;
      if(this.selectedEmail.status=='UNSEEN'){
-      fetch('http://localhost:5000/api/mark/seen', {
+      fetch('http://192.168.112.251:5001/api/mark/seen', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -608,7 +660,7 @@ this.forceUpdate()
           body: JSON.stringify({ title: 'React POST Request Example' })
       };
         console.log('hiii-zahra')
-        const response = await fetch('http://localhost:5000/api/mark/seen' , {
+        const response = await fetch('http://localhost:5001/api/mark/seen' , {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' ,
             'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
@@ -638,7 +690,7 @@ this.forceUpdate()
       delete(e,id){
         console.log("id:"+id)
         e.preventDefault();
-        fetch('http://192.168.112.251:5000/api/delete/emails', {
+        fetch('http://192.168.112.251:5001/api/delete/emails', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -814,7 +866,7 @@ this.forceUpdate()
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.251:5000/api/receive/sent/emails' , requestOptions)
+      const response = await fetch('http://192.168.112.251:5001/api/receive/sent/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -966,10 +1018,15 @@ this.forceUpdate()
         selectedLabel : 1
       }
     }
-    update(e){
+    update(e , clickedLogout){
+      if(!clickedLogout){
       e.preventDefault()
       alert('successfully send')
-this.forceUpdate()
+     // this.props.logout(e)
+this.forceUpdate()}
+else{
+  this.props.logout(e)
+}
 }
     handleLabelClick(labelId){
       console.log('Label clicked: '+labelId);
@@ -1018,12 +1075,20 @@ this.forceUpdate()
   class ActionsRow extends React.Component {
     
       clicked= false
+      clickedLogOut = false 
     
      handleComposeClick(state,e){   
       e.preventDefault()
       this.clicked=true   
        this.forceUpdate()
        console.log("hereeeee pouyeh")
+     }
+     handleLogOutclicked(e){
+      e.preventDefault()
+      this.clickedLogOut = true ;
+      this.props.updateScreen(e , this.lickedLogout)
+      
+
      }
     render(){
       console.log('bbinm chie'+ this.clicked) 
@@ -1050,25 +1115,31 @@ this.forceUpdate()
                 More
               </button>
               
-              <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
+              {/* <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 <a className="dropdown-item" href="#">Action</a>
                 <a className="dropdown-item" href="#">Another action</a>
                 <a className="dropdown-item" href="#">Something else here</a>
                 <div className="dropdown-divider"></div>
                 <a className="dropdown-item" href="#">Separated link</a>
-              </div>
+              </div> */}
             </div>
         
-            <div className="pull-right">
+            {/* <div className="pull-right">
                     <button type="button" className="btn btn-secondary">&nbsp;<i className="fa fa-cog" aria-hidden="true"></i>&nbsp;</button>
               <button type="button" className="btn btn-secondary">&nbsp;<i className="fa fa-bars" aria-hidden="true"></i>&nbsp;</button>
-                  </div>
+                  </div> */}
+                  <div className="pull-right">
+                  <div className="btn-group" role="group">
+                  <button type="button" class="btn btn-danger" onclick={e=>this.handleLogOutclicked(e)}>Log out</button>
+              
+              </div>
+              </div>
           </div>
         </div>
       )
       }else{
         return(
-        <ComposeMail update={e=>this.props.updateScreen(e)} />
+        <ComposeMail update={e=>this.props.updateScreen(e , false)} />
         )
       }
     } 
@@ -1094,7 +1165,7 @@ this.forceUpdate()
       e.preventDefault();
       console.log("okkkkk")
       console.log(state);
-      fetch('http://192.168.112.251:5000/api/send/email', {
+      fetch('http://192.168.112.251:5001/api/send/email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1120,7 +1191,11 @@ this.forceUpdate()
       })
     
     
-    }    
+    }   
+    cancleEmail(state,e){
+      this.state.success=true ;
+      this.forceUpdate()
+    } 
     render(){
       if(!this.state.success){
       return (
@@ -1141,6 +1216,8 @@ this.forceUpdate()
         </p>
         <button type="submit" className="btn btn-primary btn-block" style={{ height: 50, width: 70 }}
           onClick={e => this.sendEmail(this.state, e)}>Send</button>
+          <button type="submit" className="btn btn-danger btn-block" style={{ height: 50, width: 70 }}
+          onClick={e => this.cancleEmail(this.state, e)}>cancle</button>
       
  
       </div>
