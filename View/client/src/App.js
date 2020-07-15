@@ -44,7 +44,7 @@ class App extends React.Component {
         body: JSON.stringify({ "email": loginInfo.email, "password": loginInfo.password })
     };
        console.log('hiii-zahraaaaaaaaaaaaaaa')
-       const response = await fetch('http://192.168.112.251:5000/api/login' , { method: 'POST',
+       const response = await fetch('http://192.168.112.251:5001/api/login' , { method: 'POST',
        headers: {
          'Content-Type': 'application/json',
        },
@@ -98,7 +98,7 @@ class Login extends React.Component{
   }
   render() {
     return (
-
+//<p className = "login">
       <form>
         <h3>Étoile Email Manager</h3>
         <div className="form-group">
@@ -118,7 +118,7 @@ class Login extends React.Component{
         </div>
         <button type="button" className="btn btn-info btn-block more" onClick={this.handleSubmitClick.bind(this)}>Submit</button>
       </form>
-
+//</p>
     );
 }
 }
@@ -168,7 +168,7 @@ class Login extends React.Component{
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.251:5000/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://192.168.112.251:5001/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -251,7 +251,7 @@ class Login extends React.Component{
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.251:5000/api/receive/numberOf/emails' , requestOptions)
+      const response = await fetch('http://192.168.112.251:5001/api/receive/numberOf/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -527,7 +527,7 @@ this.forceUpdate()
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.251:5000/api/receive/emails' , requestOptions)
+      const response = await fetch('http://192.168.112.251:5001/api/receive/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -558,7 +558,7 @@ this.forceUpdate()
     
      this.myBoolean=false ;
      if(this.selectedEmail.status=='UNSEEN'){
-      fetch('http://localhost:5000/api/mark/seen', {
+      fetch('http://localhost:5001/api/mark/seen', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -608,7 +608,7 @@ this.forceUpdate()
           body: JSON.stringify({ title: 'React POST Request Example' })
       };
         console.log('hiii-zahra')
-        const response = await fetch('http://localhost:5000/api/mark/seen' , {
+        const response = await fetch('http://localhost:5001/api/mark/seen' , {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' ,
             'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFwIjp7InVzZXIiOiJ0ZXN0LmRlaGdoYW5wb3VyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiemFocmEyMjU1NDQ0MCIsImhvc3QiOiJpbWFwLmdtYWlsLmNvbSIsInBvcnQiOjk5MywidGxzIjp0cnVlLCJhdXRoVGltZW91dCI6OTAwMH0sImlhdCI6MTU5NDYyNjQ0M30.zqUnpSpAkw8VvgGrHD-2PU2Dt540mVXBWIt62SyCBLE'
@@ -638,7 +638,7 @@ this.forceUpdate()
       delete(e,id){
         console.log("id:"+id)
         e.preventDefault();
-        fetch('http://192.168.112.251:5000/api/delete/emails', {
+        fetch('http://192.168.112.251:5001/api/delete/emails', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -814,7 +814,7 @@ this.forceUpdate()
        // body: JSON.stringify({ title: 'React POST Request Example' })
     };
       console.log('hiii-zahra')
-      const response = await fetch('http://192.168.112.251:5000/api/receive/sent/emails' , requestOptions)
+      const response = await fetch('http://192.168.112.251:5001/api/receive/sent/emails' , requestOptions)
     //  .then(response => response.json())
        const body = await response.json();
        
@@ -1094,7 +1094,7 @@ this.forceUpdate()
       e.preventDefault();
       console.log("okkkkk")
       console.log(state);
-      fetch('http://192.168.112.251:5000/api/send/email', {
+      fetch('http://192.168.112.251:5001/api/send/email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
