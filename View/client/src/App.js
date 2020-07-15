@@ -991,15 +991,20 @@ class ActionsRow extends React.Component {
 
 
             </div>
-
-            <div className="pull-right">
-              <div className="btn-group" role="group">
-                <button type="button" class="btn btn-danger" onclick={e => this.handleLogOutclicked(e)}>Log out</button>
-
+        
+            {/* <div className="pull-right">
+                    <button type="button" className="btn btn-secondary">&nbsp;<i className="fa fa-cog" aria-hidden="true"></i>&nbsp;</button>
+              <button type="button" className="btn btn-secondary">&nbsp;<i className="fa fa-bars" aria-hidden="true"></i>&nbsp;</button>
+                  </div> */}
+                  <div className="pull-right">
+                  <div className="btn-group" role="group">
+                  <button type="button" class="btn btn-danger" onClick={e=>this.handleLogOutclicked(e)}>Log out</button>
+              
+              </div>
               </div>
             </div>
           </div>
-        </div>
+        
       )
     } else {
       return (
