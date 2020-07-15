@@ -42,6 +42,8 @@ class App extends React.Component {
       }
 else{
   alert('wrong password');
+  loginInfo.email=""
+  loginInfo.password=""
            this.forceUpdate()
 }
       
@@ -116,7 +118,7 @@ class Login extends React.Component{
   }
   render() {
     return (
-//<p className = "login">
+
       <form>
         <h3>Awesome Email Manager</h3>
         <div className="form-group">
@@ -136,7 +138,7 @@ class Login extends React.Component{
         </div>
         <button type="button" className="btn btn-info btn-block more" onClick={this.handleSubmitClick.bind(this)}>Submit</button>
       </form>
-//</p>
+
     );
 }
 }
@@ -618,7 +620,7 @@ this.forceUpdate()
     
      this.myBoolean=false ;
      if(this.selectedEmail.status=='UNSEEN'){
-      fetch('http://localhost:5001/api/mark/seen', {
+      fetch('http://192.168.112.251:5001/api/mark/seen', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
